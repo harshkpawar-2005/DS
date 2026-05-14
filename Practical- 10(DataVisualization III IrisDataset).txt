@@ -1,0 +1,385 @@
+# Assignment No: 10
+# Title: Data Visualization III
+
+# Aim:
+# 1. Load Iris dataset into DataFrame
+# 2. List features and their data types
+# 3. Create histogram for each feature
+# 4. Create boxplot for each feature
+# 5. Compare distributions and identify outliers
+
+!pip install seaborn --break-system-packages
+
+import seaborn as sns
+import matplotlib.pyplot as plt
+import pandas as pd
+
+iris = sns.load_dataset('iris')
+
+print("\n========== IRIS DATASET ==========\n")
+
+print(iris.to_string())
+
+print("\n========== DATASET INFORMATION ==========\n")
+
+print(iris.info())
+
+print("\n========== DATASET SHAPE ==========\n")
+
+print(iris.shape)
+
+print("\n========== MISSING VALUES ==========\n")
+
+print(iris.isnull().sum())
+
+print("\n========== FEATURES AND DATA TYPES ==========\n")
+
+print(iris.dtypes)
+
+numeric_columns = iris.select_dtypes(include=['float64']).columns
+
+for column in numeric_columns:
+
+    plt.figure(figsize=(6,5))
+
+    sns.histplot(
+        iris[column],
+        bins=20,
+        kde=False
+    )
+
+    plt.title(f"Histogram of {column}")
+
+    plt.xlabel(column)
+    plt.ylabel("Frequency")
+
+    plt.show()
+
+for column in numeric_columns:
+
+    plt.figure(figsize=(6,5))
+
+    sns.boxplot(
+        y=iris[column]
+    )
+
+    plt.title(f"Boxplot of {column}")
+
+    plt.ylabel(column)
+
+    plt.show()
+
+print("\n========== OBSERVATIONS ==========\n")
+
+print("1. Sepal length and sepal width are approximately normally distributed.")
+print("2. Petal length and petal width show clear variation among species.")
+print("3. Boxplots help identify outliers in the dataset.")
+print("4. Some outliers are present in sepal width.")
+print("5. Petal measurements have less overlap compared to sepal measurements.")
+
+
+# ============================================================
+# THEORY / VIVA QUESTIONS
+# ============================================================
+
+# 1. What is Data Visualization?
+# Answer:
+# Data Visualization is the graphical representation of data using:
+#
+# Charts
+# Graphs
+# Plots
+#
+# It helps to:
+#
+# Understand patterns
+# Analyze trends
+# Detect outliers
+# Make decisions easily
+
+
+# 2. What is the objective of this practical?
+# Answer:
+# The objective of this practical is:
+#
+# To analyze Iris dataset using visualization
+# To create histograms and box plots
+# To compare feature distributions
+# To identify outliers
+
+
+# 3. Which dataset is used in this practical?
+# Answer:
+# The Iris flower dataset is used.
+#
+# It contains flower measurements such as:
+#
+# Sepal length
+# Sepal width
+# Petal length
+# Petal width
+#
+# The dataset is used for classification and visualization tasks.
+
+
+# 4. How do you load the Iris dataset using Seaborn?
+# Answer:
+#
+# dataset = sns.load_dataset('iris')
+
+
+# 5. What is Seaborn?
+# Answer:
+# Seaborn is a Python visualization library built on top of Matplotlib.
+#
+# It provides:
+#
+# Attractive statistical graphics
+# Easy plotting functions
+# Better visualization styles
+
+
+# 6. Why is Seaborn preferred for visualization?
+# Answer:
+# Seaborn is preferred because:
+#
+# Easy to use
+# Requires less coding
+# Creates attractive plots
+# Works directly with Pandas DataFrames
+
+
+# 7. What are the features available in Iris dataset?
+# Answer:
+#
+# Features in Iris dataset:
+#
+# Sepal Length
+# Sepal Width
+# Petal Length
+# Petal Width
+#
+# Target variable:
+#
+# Species
+#
+# Feature types:
+#
+# Numerical features → sepal/petal measurements
+# Categorical feature → species
+
+
+# 8. What is a Histogram?
+# Answer:
+# Histogram is a graph used to show frequency distribution of numerical data.
+#
+# It divides data into intervals called bins.
+
+
+# 9. Why are histograms used?
+# Answer:
+# Histograms help to:
+#
+# Understand distribution
+# Find skewness
+# Detect spread of data
+# Identify frequency patterns
+
+
+# 10. What are bins in Histogram?
+# Answer:
+# Bins are intervals used to group data values in a histogram.
+#
+# More bins:
+#
+# Detailed distribution
+#
+# Fewer bins:
+#
+# Simpler visualization
+
+
+# 11. What is a Box Plot?
+# Answer:
+# A Box Plot displays data distribution using:
+#
+# Median
+# Quartiles
+# Outliers
+#
+# It helps compare distributions and detect abnormal values.
+
+
+# 12. What are quartiles?
+# Answer:
+#
+# Quartiles divide data into four equal parts:
+#
+# Q1 → 25%
+# Q2 → Median
+# Q3 → 75%
+
+
+# 13. What is median in Box Plot?
+# Answer:
+# Median is the middle value of ordered data.
+#
+# It is shown by the line inside the box.
+
+
+# 14. What are outliers?
+# Answer:
+# Outliers are unusual values far away from the normal data range.
+#
+# In box plots, they are shown as:
+#
+# Dots
+# Circles
+
+
+# 15. How does box plot help identify outliers?
+# Answer:
+# Values lying outside whiskers are treated as outliers.
+#
+# These points are displayed separately.
+
+
+# 16. What are distribution plots?
+# Answer:
+# Distribution plots help visualize data distribution.
+#
+# Examples:
+#
+# Distplot
+# Jointplot
+# Rugplot
+
+
+# 17. What is Distplot?
+# Answer:
+# Distplot displays histogram and density distribution of a numerical variable.
+#
+# It is a univariate analysis plot.
+
+
+# 18. What is Joint Plot?
+# Answer:
+# Joint Plot combines:
+#
+# Two distribution plots
+# One scatter plot
+#
+# It helps analyze relationship between two variables.
+
+
+# 19. What is Rug Plot?
+# Answer:
+# Rug Plot displays small vertical lines for each data point along the axis.
+#
+# It helps visualize data density.
+
+
+# 20. What are categorical plots?
+# Answer:
+# Categorical plots visualize categorical data against:
+#
+# Numerical variables
+# Other categorical variables
+#
+# Examples:
+#
+# Bar plot
+# Count plot
+# Box plot
+# Violin plot
+
+
+# 21. What is a Bar Plot?
+# Answer:
+# Bar plot displays aggregate values such as:
+#
+# Mean
+# Sum
+# Standard deviation
+#
+# for categories.
+
+
+# 22. What is Count Plot?
+# Answer:
+# Count plot shows the frequency count of categorical values.
+#
+# Example:
+#
+# Number of male/female passengers
+
+
+# 23. What is a Violin Plot?
+# Answer:
+# Violin plot combines:
+#
+# Box plot
+# Density plot
+#
+# It gives detailed information about data distribution.
+
+
+# 24. What is Strip Plot?
+# Answer:
+# Strip plot shows scatter points for categorical data.
+#
+# It helps visualize data distribution across categories.
+
+
+# 25. What is Swarm Plot?
+# Answer:
+# Swarm plot is similar to strip plot but prevents overlapping of points.
+#
+# It gives better visualization of data distribution.
+
+
+# 26. What are Matrix Plots?
+# Answer:
+# Matrix plots display data in row-column format.
+#
+# Examples:
+#
+# Heatmap
+# Clustermap
+
+
+# 27. What is Heatmap?
+# Answer:
+# Heatmap visualizes correlation values using colors.
+#
+# Higher correlation is shown using stronger color intensity.
+
+
+# 28. What is correlation?
+# Answer:
+# Correlation measures relationship between variables.
+#
+# Range:
+#
+# +1 → strong positive relation
+# -1 → strong negative relation
+# 0 → no relation
+
+
+# 29. What is Clustermap?
+# Answer:
+# Clustermap groups similar rows and columns using hierarchical clustering.
+#
+# It helps identify similar patterns in data.
+
+
+# 30. What is the conclusion of this practical?
+# Answer:
+# In this practical, we used Seaborn library to analyze the Iris dataset using:
+#
+# Histograms
+# Box plots
+# Distribution plots
+# Matrix plots
+#
+# We compared feature distributions and identified outliers using visualization techniques.

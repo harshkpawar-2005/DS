@@ -1,0 +1,1130 @@
+1. CODE
+
+import pandas as pd
+import numpy as np
+
+from sklearn.datasets import load_iris
+from sklearn.model_selection import train_test_split
+from sklearn.preprocessing import StandardScaler
+from sklearn.naive_bayes import GaussianNB
+
+from sklearn.metrics import (
+    confusion_matrix,
+    accuracy_score,
+    precision_score,
+    recall_score
+)
+
+iris = load_iris()
+
+df = pd.DataFrame(
+    iris.data,
+    columns=iris.feature_names
+)
+
+df['Species'] = pd.Categorical.from_codes(
+    iris.target,
+    iris.target_names
+)
+
+print("\n========== IRIS DATASET ==========\n")
+print(df.to_string())
+
+print("\n========== NULL VALUES ==========\n")
+print(df.isnull().sum())
+
+X = iris.data
+
+y = iris.target
+
+X_train, X_test, y_train, y_test = train_test_split(
+    X,
+    y,
+    test_size=0.3,
+    random_state=1
+)
+
+sc = StandardScaler()
+
+X_train = sc.fit_transform(X_train)
+X_test = sc.transform(X_test)
+
+gaussian = GaussianNB()
+
+gaussian.fit(X_train, y_train)
+
+y_pred = gaussian.predict(X_test)
+
+print("\n========== PREDICTED VALUES ==========\n")
+print(y_pred)
+
+cm = confusion_matrix(y_test, y_pred)
+
+print("\n========== CONFUSION MATRIX ==========\n")
+print(cm)
+
+accuracy = accuracy_score(y_test, y_pred)
+print("\nAccuracy :", accuracy)
+
+error_rate = 1 - accuracy
+print("Error Rate :", error_rate)
+
+precision = precision_score(y_test, y_pred, average='micro')
+print("Precision :", precision)
+
+recall = recall_score(y_test, y_pred, average='micro')
+print("Recall :", recall)
+
+print("\n========== TP, FP, TN, FN ==========\n")
+
+for i in range(len(cm)):
+
+    TP = cm[i, i]
+
+    FP = cm[:, i].sum() - TP
+
+    FN = cm[i, :].sum() - TP
+
+    TN = cm.sum() - (TP + FP + FN)
+
+    print("Class", i)
+    print("TP =", TP)
+    print("FP =", FP)
+    print("FN =", FN)
+    print("TN =", TN)
+    print()
+
+
+
+2. TITLE
+
+Assignment No: 6
+
+TITLE:
+IMPLEMENT SIMPLE NAÏVE BAYES CLASSIFICATION ALGORITHM USING PYTHON ON IRIS DATASET
+
+
+
+3. WHAT THE PRACTICAL DOES / AIM
+
+This practical demonstrates the Naïve Bayes Classification algorithm using the Iris dataset.
+
+The main aim of this practical is:
+- To implement Naïve Bayes classification
+- To classify iris flower species
+- To preprocess the dataset
+- To train Gaussian Naïve Bayes model
+- To predict flower categories
+- To evaluate classification performance
+
+The practical uses:
+- Pandas for data handling
+- NumPy for numerical operations
+- Scikit-learn for machine learning
+
+The Iris dataset contains:
+- Sepal length
+- Sepal width
+- Petal length
+- Petal width
+
+Target classes:
+- Iris-setosa
+- Iris-versicolor
+- Iris-virginica
+
+Operations performed:
+- Loading Iris dataset
+- Creating DataFrame
+- Checking missing values
+- Splitting dataset
+- Feature scaling
+- Training Gaussian Naïve Bayes model
+- Predicting flower species
+- Generating confusion matrix
+- Calculating:
+  - Accuracy
+  - Error Rate
+  - Precision
+  - Recall
+  - TP
+  - TN
+  - FP
+  - FN
+
+Evaluation metrics used:
+- Confusion Matrix
+- Accuracy
+- Precision
+- Recall
+- Error Rate
+
+
+
+4. DETAILED LINE-BY-LINE CODE EXPLANATION
+
+import pandas as pd
+
+Explanation:
+Imports Pandas library.
+
+Pandas is used for:
+- Data handling
+- Data analysis
+- Creating DataFrames
+- Organizing tabular data
+
+pd is alias for pandas.
+
+
+
+import numpy as np
+
+Explanation:
+Imports NumPy library.
+
+NumPy is used for:
+- Numerical operations
+- Mathematical calculations
+- Array handling
+
+np is alias for numpy.
+
+
+
+from sklearn.datasets import load_iris
+
+Explanation:
+Imports load_iris() function from sklearn datasets.
+
+load_iris():
+Used to load built-in Iris dataset.
+
+Iris dataset is one of the most famous datasets in machine learning.
+
+
+
+from sklearn.model_selection import train_test_split
+
+Explanation:
+Imports train_test_split() function.
+
+Used to divide dataset into:
+- Training data
+- Testing data
+
+Training data:
+Used to train model.
+
+Testing data:
+Used to evaluate model.
+
+
+
+from sklearn.preprocessing import StandardScaler
+
+Explanation:
+Imports StandardScaler.
+
+Used for feature scaling.
+
+Feature scaling converts all feature values into similar range.
+
+Benefits:
+- Better model performance
+- Faster training
+- Improved accuracy
+
+
+
+from sklearn.naive_bayes import GaussianNB
+
+Explanation:
+Imports Gaussian Naïve Bayes classifier.
+
+GaussianNB:
+Used when input data contains continuous numerical values.
+
+It assumes data follows normal distribution.
+
+
+
+from sklearn.metrics import (
+    confusion_matrix,
+    accuracy_score,
+    precision_score,
+    recall_score
+)
+
+Explanation:
+Imports evaluation metrics.
+
+1. confusion_matrix
+→ Creates confusion matrix.
+
+2. accuracy_score
+→ Calculates model accuracy.
+
+3. precision_score
+→ Calculates precision.
+
+4. recall_score
+→ Calculates recall.
+
+
+
+iris = load_iris()
+
+Explanation:
+Loads Iris dataset into variable iris.
+
+Dataset contains:
+- Feature values
+- Target labels
+- Feature names
+- Target names
+
+
+
+df = pd.DataFrame(
+    iris.data,
+    columns=iris.feature_names
+)
+
+Explanation:
+Creates Pandas DataFrame.
+
+iris.data:
+Contains feature values.
+
+columns=iris.feature_names:
+Assigns proper column names.
+
+The DataFrame contains:
+- Rows → flower records
+- Columns → flower measurements
+
+
+
+df['Species'] = pd.Categorical.from_codes(
+    iris.target,
+    iris.target_names
+)
+
+Explanation:
+Creates new column named Species.
+
+iris.target:
+Contains numerical labels.
+
+iris.target_names:
+Contains species names.
+
+Conversion:
+- 0 → setosa
+- 1 → versicolor
+- 2 → virginica
+
+This improves readability.
+
+
+
+print("\n========== IRIS DATASET ==========\n")
+
+Explanation:
+Displays heading for dataset.
+
+\n adds new line.
+
+
+
+print(df.to_string())
+
+Explanation:
+Displays complete dataset.
+
+to_string():
+Prints all rows and columns properly.
+
+Useful for:
+- Viewing full dataset
+- Understanding structure
+
+
+
+print("\n========== NULL VALUES ==========\n")
+
+Explanation:
+Displays heading for null values section.
+
+
+
+print(df.isnull().sum())
+
+Explanation:
+Checks missing values.
+
+isnull():
+Returns True for null values.
+
+sum():
+Counts total null values column-wise.
+
+Useful for:
+- Data preprocessing
+- Identifying incomplete data
+
+
+
+X = iris.data
+
+Explanation:
+Stores feature variables in X.
+
+Features include:
+- Sepal length
+- Sepal width
+- Petal length
+- Petal width
+
+X contains input data.
+
+
+
+y = iris.target
+
+Explanation:
+Stores target labels in y.
+
+Target values:
+- 0
+- 1
+- 2
+
+These represent flower species.
+
+
+
+X_train, X_test, y_train, y_test = train_test_split(
+    X,
+    y,
+    test_size=0.3,
+    random_state=1
+)
+
+Explanation:
+Splits dataset into training and testing sets.
+
+Parameters:
+
+X
+→ Input features
+
+y
+→ Target labels
+
+test_size=0.3
+→ 30% data used for testing
+→ 70% data used for training
+
+random_state=1
+→ Ensures same random split every time.
+
+Output:
+- X_train → training inputs
+- X_test → testing inputs
+- y_train → training outputs
+- y_test → testing outputs
+
+
+
+sc = StandardScaler()
+
+Explanation:
+Creates StandardScaler object.
+
+Used for scaling features.
+
+
+
+X_train = sc.fit_transform(X_train)
+
+Explanation:
+Fits scaler on training data and transforms it.
+
+fit_transform():
+- Learns scaling parameters
+- Applies scaling
+
+After scaling:
+- Mean = 0
+- Standard deviation = 1
+
+
+
+X_test = sc.transform(X_test)
+
+Explanation:
+Transforms testing data using same scaling learned from training data.
+
+Important:
+Testing data should never be fit separately.
+
+
+
+gaussian = GaussianNB()
+
+Explanation:
+Creates Gaussian Naïve Bayes model object.
+
+Used for classification.
+
+
+
+gaussian.fit(X_train, y_train)
+
+Explanation:
+Trains GaussianNB model using training data.
+
+fit():
+Learns patterns from data.
+
+The model learns relationship between:
+- Input features
+- Flower species
+
+
+
+y_pred = gaussian.predict(X_test)
+
+Explanation:
+Predicts flower species using testing data.
+
+Predicted output stored in y_pred.
+
+
+
+print("\n========== PREDICTED VALUES ==========\n")
+
+Explanation:
+Displays heading for predicted values.
+
+
+
+print(y_pred)
+
+Explanation:
+Displays predicted species labels.
+
+
+
+cm = confusion_matrix(y_test, y_pred)
+
+Explanation:
+Creates confusion matrix.
+
+Confusion matrix compares:
+- Actual values
+- Predicted values
+
+Used to evaluate model performance.
+
+
+
+print("\n========== CONFUSION MATRIX ==========\n")
+
+Explanation:
+Displays heading for confusion matrix.
+
+
+
+print(cm)
+
+Explanation:
+Displays confusion matrix table.
+
+Structure:
+Rows → actual values
+Columns → predicted values
+
+
+
+accuracy = accuracy_score(y_test, y_pred)
+
+Explanation:
+Calculates model accuracy.
+
+Formula:
+
+Accuracy =
+(TP + TN) / Total
+
+Higher accuracy means better model.
+
+
+
+print("\nAccuracy :", accuracy)
+
+Explanation:
+Displays accuracy value.
+
+
+
+error_rate = 1 - accuracy
+
+Explanation:
+Calculates error rate.
+
+Error Rate:
+Percentage of incorrect predictions.
+
+Lower error rate indicates better performance.
+
+
+
+print("Error Rate :", error_rate)
+
+Explanation:
+Displays error rate.
+
+
+
+precision = precision_score(y_test, y_pred, average='micro')
+
+Explanation:
+Calculates precision.
+
+average='micro':
+Used for multiclass classification.
+
+Precision measures:
+Correct positive predictions.
+
+
+
+print("Precision :", precision)
+
+Explanation:
+Displays precision value.
+
+
+
+recall = recall_score(y_test, y_pred, average='micro')
+
+Explanation:
+Calculates recall.
+
+Recall measures:
+Correctly identified positive cases.
+
+
+
+print("Recall :", recall)
+
+Explanation:
+Displays recall value.
+
+
+
+print("\n========== TP, FP, TN, FN ==========\n")
+
+Explanation:
+Displays heading for TP, FP, TN, FN section.
+
+
+
+for i in range(len(cm)):
+
+Explanation:
+Loops through each class in confusion matrix.
+
+Used for calculating:
+- TP
+- FP
+- FN
+- TN
+
+for every class separately.
+
+
+
+TP = cm[i, i]
+
+Explanation:
+Calculates True Positive.
+
+Correctly predicted positive values.
+
+
+
+FP = cm[:, i].sum() - TP
+
+Explanation:
+Calculates False Positive.
+
+Predicted positive but actually negative.
+
+
+
+FN = cm[i, :].sum() - TP
+
+Explanation:
+Calculates False Negative.
+
+Actual positive but predicted negative.
+
+
+
+TN = cm.sum() - (TP + FP + FN)
+
+Explanation:
+Calculates True Negative.
+
+Correctly predicted negative values.
+
+
+
+print("Class", i)
+
+Explanation:
+Displays class number.
+
+
+
+print("TP =", TP)
+
+Explanation:
+Displays True Positive value.
+
+
+
+print("FP =", FP)
+
+Explanation:
+Displays False Positive value.
+
+
+
+print("FN =", FN)
+
+Explanation:
+Displays False Negative value.
+
+
+
+print("TN =", TN)
+
+Explanation:
+Displays True Negative value.
+
+
+
+print()
+
+Explanation:
+Adds blank line for better readability.
+
+
+
+5. VIVA PART
+
+1. What is Naïve Bayes Algorithm?
+
+Answer:
+Naïve Bayes is a supervised machine learning classification algorithm based on Bayes Theorem.
+
+It is mainly used for:
+- Classification problems
+- Predicting categorical outputs
+
+It assumes that all input features are independent of each other.
+
+Examples:
+- Spam detection
+- Disease prediction
+- Text classification
+
+
+
+2. Why is it called “Naïve” Bayes?
+
+Answer:
+It is called “Naïve” because the algorithm assumes that all features are independent from each other, which is a very simple or naïve assumption.
+
+For example:
+Sepal length and petal length are assumed independent in Iris dataset.
+
+Even though this assumption may not be true, the algorithm works well in many cases.
+
+
+
+3. What is the objective of this practical?
+
+Answer:
+The objective of this practical is:
+- To implement Naïve Bayes classification on the Iris dataset
+- To classify flower species
+- To evaluate performance using confusion matrix metrics like:
+  - Accuracy
+  - Precision
+  - Recall
+  - Error Rate
+
+
+
+4. What is the Iris Dataset?
+
+Answer:
+The Iris dataset is a famous machine learning dataset used for classification.
+
+It contains flower measurements such as:
+- Sepal length
+- Sepal width
+- Petal length
+- Petal width
+
+The target variable predicts flower species:
+- Iris-setosa
+- Iris-versicolor
+- Iris-virginica
+
+
+
+5. What type of algorithm is Naïve Bayes?
+
+Answer:
+Naïve Bayes is:
+- A supervised learning algorithm
+- A probabilistic classifier
+
+It predicts classes based on probabilities.
+
+
+
+6. What is Bayes Theorem?
+
+Answer:
+Bayes Theorem is a probability formula used to find conditional probability.
+
+Formula:
+
+P(A|B) =
+[P(B|A) × P(A)] / P(B)
+
+Where:
+- P(A|B) = probability of A given B
+- P(B|A) = probability of B given A
+- P(A) = prior probability
+- P(B) = evidence probability
+
+Naïve Bayes uses this theorem for classification.
+
+
+
+7. What is prior probability?
+
+Answer:
+Prior probability is the probability of an event before considering any additional information.
+
+Example:
+P(A)
+
+It represents initial belief about an event.
+
+
+
+8. What is conditional probability?
+
+Answer:
+Conditional probability is the probability of an event occurring given that another event has already occurred.
+
+Formula:
+P(A|B)
+
+It means probability of A when B is true.
+
+
+
+9. What assumption does Naïve Bayes make?
+
+Answer:
+Naïve Bayes assumes that:
+All features are independent of each other.
+
+This simplifies calculations and makes the algorithm fast.
+
+
+
+10. What are the advantages of Naïve Bayes?
+
+Answer:
+
+Advantages:
+- Simple and easy to implement
+- Fast training and prediction
+- Works well for large datasets
+- Performs well in text classification
+- Requires less training data
+
+
+
+11. What are the disadvantages of Naïve Bayes?
+
+Answer:
+
+Disadvantages:
+- Assumes feature independence
+- Less accurate when features are highly related
+- Zero probability problem may occur
+
+
+
+12. What is Gaussian Naïve Bayes?
+
+Answer:
+Gaussian Naïve Bayes is a type of Naïve Bayes used when input features are continuous numerical values.
+
+It assumes data follows Gaussian (Normal) distribution.
+
+In this practical:
+
+from sklearn.naive_bayes import GaussianNB
+
+
+
+13. Why is GaussianNB used in Iris dataset?
+
+Answer:
+Because Iris dataset contains continuous numerical values like:
+- Petal length
+- Sepal width
+
+GaussianNB handles continuous data effectively.
+
+
+
+14. What is classification?
+
+Answer:
+Classification is a machine learning process of predicting categorical labels.
+
+Examples:
+- Spam or Not Spam
+- Disease or No Disease
+- Flower species classification
+
+
+
+15. What is data preprocessing?
+
+Answer:
+Data preprocessing means preparing data before training the model.
+
+It includes:
+- Checking null values
+- Feature scaling
+- Encoding categorical data
+- Splitting dataset
+
+
+
+16. Why do we split data into training and testing sets?
+
+Answer:
+Dataset splitting helps evaluate model performance on unseen data.
+
+Usually:
+- 80% → Training data
+- 20% → Testing data
+
+Training data is used to learn patterns and testing data checks accuracy.
+
+
+
+17. What is feature scaling?
+
+Answer:
+Feature scaling means bringing all feature values into a similar range.
+
+It improves:
+- Accuracy
+- Training speed
+- Model performance
+
+
+
+18. What is the role of fit() function?
+
+Answer:
+The fit() function trains the Naïve Bayes model using training data.
+
+Example:
+
+gaussian.fit(X_train, y_train)
+
+The model learns patterns from data.
+
+
+
+19. What is the role of predict() function?
+
+Answer:
+The predict() function predicts output classes for test data.
+
+Example:
+
+Y_pred = gaussian.predict(X_test)
+
+
+
+20. What is a confusion matrix?
+
+Answer:
+A confusion matrix is a table used to evaluate classification performance.
+
+It compares:
+- Actual values
+- Predicted values
+
+It contains:
+- TP
+- TN
+- FP
+- FN
+
+
+
+21. What is True Positive (TP)?
+
+Answer:
+True Positive means:
+- Actual class is positive
+- Predicted class is also positive
+
+Correct positive prediction.
+
+
+
+22. What is True Negative (TN)?
+
+Answer:
+True Negative means:
+- Actual class is negative
+- Predicted class is also negative
+
+Correct negative prediction.
+
+
+
+23. What is False Positive (FP)?
+
+Answer:
+False Positive means:
+- Actual class is negative
+- Predicted class is positive
+
+Wrong positive prediction.
+
+Also called Type-1 Error.
+
+
+
+24. What is False Negative (FN)?
+
+Answer:
+False Negative means:
+- Actual class is positive
+- Predicted class is negative
+
+Wrong negative prediction.
+
+Also called Type-2 Error.
+
+
+
+25. What is Accuracy?
+
+Answer:
+Accuracy measures how many predictions are correct.
+
+Formula:
+
+Accuracy =
+(TP + TN) /
+(TP + TN + FP + FN)
+
+Higher accuracy means better model performance.
+
+
+
+26. What is Precision?
+
+Answer:
+Precision measures how many predicted positive values are actually positive.
+
+Formula:
+
+Precision =
+TP / (TP + FP)
+
+High precision means fewer false positives.
+
+
+
+27. What is Recall?
+
+Answer:
+Recall measures how many actual positive cases are correctly predicted.
+
+Formula:
+
+Recall =
+TP / (TP + FN)
+
+High recall means fewer false negatives.
+
+
+
+28. What is Error Rate?
+
+Answer:
+Error Rate measures incorrect predictions.
+
+Formula:
+
+Error Rate =
+(FP + FN) / Total
+
+Lower error rate indicates better model performance.
+
+
+
+29. What libraries are used in this practical?
+
+Answer:
+
+Main libraries:
+- NumPy
+- Pandas
+- Matplotlib
+- Scikit-learn
+
+Scikit-learn provides:
+- GaussianNB
+- Accuracy metrics
+- Confusion matrix
+
+
+
+30. What is the conclusion of this practical?
+
+Answer:
+In this practical, we implemented the Naïve Bayes classification algorithm on the Iris dataset.
+
+We:
+- Preprocessed the dataset
+- Trained the GaussianNB model
+- Predicted flower species
+- Evaluated performance using confusion matrix and metrics
+
+Thus, Naïve Bayes is a simple and effective classification algorithm for categorical prediction problems.

@@ -1,0 +1,675 @@
+# CODE
+
+!pip install seaborn --break-system-packages
+
+import seaborn as sns
+import matplotlib.pyplot as plt
+import pandas as pd
+
+titanic = sns.load_dataset('titanic')
+
+print("\n========== TITANIC DATASET ==========\n")
+
+print(titanic.to_string())
+
+print("\n========== DATASET INFORMATION ==========\n")
+
+print(titanic.info())
+
+print("\n========== DATASET SHAPE ==========\n")
+
+print(titanic.shape)
+
+print("\n========== MISSING VALUES ==========\n")
+
+print(titanic.isnull().sum())
+
+plt.figure(figsize=(8,6))
+
+sns.boxplot(
+    x='sex',
+    y='age',
+    hue='survived',
+    data=titanic
+)
+
+plt.title("Box Plot of Age Distribution by Gender and Survival")
+
+plt.xlabel("Gender")
+plt.ylabel("Age")
+
+plt.show()
+
+
+========================================================
+
+TITLE
+
+Data Visualization II
+
+========================================================
+
+WHAT THE PRACTICAL IS
+
+This practical focuses on Data Visualization using the Titanic dataset available in the Seaborn library.
+
+In this experiment, we create a Box Plot to visualize the distribution of passenger ages based on:
+
+1. Gender (sex)
+2. Survival status (survived)
+
+The main purpose of this practical is:
+
+• To understand how data visualization helps in Exploratory Data Analysis (EDA)
+• To analyze passenger age distribution
+• To compare survival patterns between male and female passengers
+• To identify spread of data and outliers using a box plot
+
+The Titanic dataset contains information such as:
+
+• Age
+• Gender
+• Passenger class
+• Fare
+• Survival status
+
+Using Seaborn and Matplotlib, we generate a statistical visualization that clearly shows how age distribution differs among male and female passengers and whether they survived or not.
+
+========================================================
+
+CODE EXPLANATION PROPER
+
+1. Installing Seaborn Library
+
+!pip install seaborn --break-system-packages
+
+Explanation:
+
+• This command installs the Seaborn library in Jupyter Notebook.
+• Seaborn is a Python visualization library used for creating attractive statistical graphs.
+• --break-system-packages allows installation in some Linux/Jupyter environments where permissions are restricted.
+
+--------------------------------------------------------
+
+2. Importing Required Libraries
+
+import seaborn as sns
+import matplotlib.pyplot as plt
+import pandas as pd
+
+Explanation:
+
+A) seaborn
+• Imported as sns
+• Used for creating statistical visualizations like:
+  - Box plots
+  - Histograms
+  - Count plots
+
+B) matplotlib.pyplot
+• Imported as plt
+• Used for plotting graphs and displaying figures.
+
+C) pandas
+• Imported as pd
+• Used for handling datasets in tabular format.
+
+--------------------------------------------------------
+
+3. Loading Titanic Dataset
+
+titanic = sns.load_dataset('titanic')
+
+Explanation:
+
+• Loads the built-in Titanic dataset directly from Seaborn.
+• The dataset contains details about Titanic passengers.
+
+Important columns include:
+• age
+• sex
+• fare
+• survived
+• pclass
+
+Dataset contains:
+• 891 rows
+• 15 columns
+
+--------------------------------------------------------
+
+4. Printing Complete Dataset
+
+print("\n========== TITANIC DATASET ==========\n")
+
+print(titanic.to_string())
+
+Explanation:
+
+• Displays the complete Titanic dataset.
+• to_string() prints all rows and columns properly.
+• Helps inspect the raw dataset before visualization.
+
+--------------------------------------------------------
+
+5. Displaying Dataset Information
+
+print("\n========== DATASET INFORMATION ==========\n")
+
+print(titanic.info())
+
+Explanation:
+
+info() provides:
+• Total rows and columns
+• Column names
+• Datatypes
+• Non-null values
+• Memory usage
+
+Example:
+• age → float
+• sex → object/string
+• survived → integer
+
+--------------------------------------------------------
+
+6. Checking Dataset Shape
+
+print("\n========== DATASET SHAPE ==========\n")
+
+print(titanic.shape)
+
+Explanation:
+
+• shape returns:
+  - Number of rows
+  - Number of columns
+
+Example Output:
+(891, 15)
+
+Meaning:
+• 891 rows
+• 15 columns
+
+--------------------------------------------------------
+
+7. Checking Missing Values
+
+print("\n========== MISSING VALUES ==========\n")
+
+print(titanic.isnull().sum())
+
+Explanation:
+
+• isnull() checks whether values are missing.
+• sum() counts total missing values column-wise.
+
+Importance:
+• Missing values affect analysis
+• Some graphs may not work properly with null values
+
+Example:
+• Age column may contain missing values.
+
+========================================================
+
+BOX PLOT VISUALIZATION
+
+--------------------------------------------------------
+
+8. Creating Figure Size
+
+plt.figure(figsize=(8,6))
+
+Explanation:
+
+• Creates a plotting area.
+• figsize=(8,6) means:
+  - Width = 8
+  - Height = 6
+
+This improves graph readability.
+
+--------------------------------------------------------
+
+9. Creating Box Plot
+
+sns.boxplot(
+    x='sex',
+    y='age',
+    hue='survived',
+    data=titanic
+)
+
+Explanation:
+
+This is the main visualization part.
+
+A) x='sex'
+• Displays categories on X-axis:
+  - Male
+  - Female
+
+B) y='age'
+• Displays passenger age on Y-axis.
+
+C) hue='survived'
+• Separates passengers based on survival status:
+  - 0 → Did not survive
+  - 1 → Survived
+
+D) data=titanic
+• Specifies the dataset.
+
+The graph compares:
+• Male vs Female
+• Survived vs Non-survived
+• Age distribution
+
+========================================================
+
+UNDERSTANDING BOX PLOT
+
+A Box Plot contains:
+
+1. Median
+• Middle line inside box.
+• Represents middle age value.
+
+2. Quartiles
+• Q1 → 25% data
+• Q2 → Median
+• Q3 → 75% data
+
+3. IQR
+
+IQR = Q3 - Q1
+
+• Represents middle 50% data spread.
+
+4. Whiskers
+• Show data range excluding outliers.
+
+5. Outliers
+• Dots outside whiskers.
+• Represent abnormal values.
+
+--------------------------------------------------------
+
+10. Adding Title
+
+plt.title("Box Plot of Age Distribution by Gender and Survival")
+
+Explanation:
+
+• Adds title to graph.
+• Makes graph understandable.
+
+--------------------------------------------------------
+
+11. Labeling X-axis
+
+plt.xlabel("Gender")
+
+Explanation:
+
+• Labels X-axis as Gender.
+
+--------------------------------------------------------
+
+12. Labeling Y-axis
+
+plt.ylabel("Age")
+
+Explanation:
+
+• Labels Y-axis as Age.
+
+--------------------------------------------------------
+
+13. Displaying Plot
+
+plt.show()
+
+Explanation:
+
+• Displays the final box plot graph.
+• Without show(), the graph may not appear.
+
+========================================================
+
+OBSERVATIONS / INFERENCE
+
+1. Female passengers had a higher survival rate compared to male passengers.
+
+2. Younger passengers were more likely to survive.
+
+3. Male passengers show wider age distribution.
+
+4. Some age outliers are present in both genders.
+
+5. Median age differs between survived and non-survived passengers.
+
+6. Female age distribution appears more compact compared to males.
+
+7. Box plot clearly helps compare multiple groups visually.
+
+========================================================
+
+VIVA QUESTIONS AND ANSWERS
+
+1. What is Data Visualization?
+Answer:
+Data Visualization is the graphical representation of data using plots, charts, and graphs.
+
+It helps to:
+• Understand data easily
+• Find patterns and trends
+• Detect outliers
+• Compare data visually
+
+--------------------------------------------------------
+
+2. What is the objective of this practical?
+Answer:
+The objective of this practical is:
+
+• To create a box plot using Titanic dataset
+• To analyze age distribution with respect to gender
+• To observe survival patterns using visualization
+
+--------------------------------------------------------
+
+3. What is a Box Plot?
+Answer:
+A Box Plot is a graphical representation used to show distribution of data using quartiles.
+
+It displays:
+• Median
+• Quartiles
+• Range
+• Outliers
+
+--------------------------------------------------------
+
+4. Why is Box Plot used?
+Answer:
+Box Plot is used to:
+• Understand data distribution
+• Detect outliers
+• Compare groups
+• Visualize spread of data
+
+--------------------------------------------------------
+
+5. What are quartiles in Box Plot?
+Answer:
+
+Quartiles divide data into four equal parts:
+
+• Q1 (First Quartile) → 25% data
+• Q2 (Median) → 50% data
+• Q3 (Third Quartile) → 75% data
+
+--------------------------------------------------------
+
+6. What does the line inside the box represent?
+Answer:
+The line inside the box represents the median of the dataset.
+
+Median is the middle value of ordered data.
+
+--------------------------------------------------------
+
+7. What is IQR?
+Answer:
+IQR stands for Interquartile Range.
+
+Formula:
+
+IQR = Q3 − Q1
+
+It represents the spread of middle 50% data.
+
+--------------------------------------------------------
+
+8. What are whiskers in Box Plot?
+Answer:
+Whiskers represent the range of data excluding outliers.
+
+They extend from:
+• Minimum value to Q1
+• Q3 to Maximum value
+
+--------------------------------------------------------
+
+9. What are outliers?
+Answer:
+Outliers are unusual data points that are far away from the normal data range.
+
+In box plots, outliers are shown using:
+• Dots
+• Small circles
+
+--------------------------------------------------------
+
+10. Which dataset is used in this practical?
+Answer:
+The Titanic dataset is used.
+
+It contains information about passengers such as:
+• Age
+• Gender
+• Fare
+• Passenger class
+• Survival status
+
+The dataset contains:
+• 891 rows
+• 15 columns
+
+--------------------------------------------------------
+
+11. How do you load Titanic dataset in Seaborn?
+Answer:
+
+titanic = sns.load_dataset('titanic')
+
+--------------------------------------------------------
+
+12. Which library is used for visualization in this practical?
+Answer:
+
+Main libraries:
+• Seaborn
+• Matplotlib
+
+--------------------------------------------------------
+
+13. What is Seaborn?
+Answer:
+Seaborn is a Python visualization library built on top of Matplotlib.
+
+It provides:
+• Attractive statistical plots
+• Easy plotting functions
+• Better visual appearance
+
+--------------------------------------------------------
+
+14. What is the syntax of box plot in Seaborn?
+Answer:
+
+sns.boxplot(x='sex', y='age', data=dataset)
+
+Where:
+• x → categorical variable
+• y → numerical variable
+• data → dataset
+
+--------------------------------------------------------
+
+15. What does x='sex' represent in the box plot?
+Answer:
+x='sex' represents the categorical variable:
+• Male
+• Female
+
+The box plot compares age distribution for both genders.
+
+--------------------------------------------------------
+
+16. What does y='age' represent?
+Answer:
+y='age' represents the numerical variable showing passenger ages.
+
+--------------------------------------------------------
+
+17. What is the use of hue parameter in box plot?
+Answer:
+The hue parameter adds another categorical variable to the plot.
+
+Example:
+
+sns.boxplot(x='sex', y='age', hue='survived', data=titanic)
+
+It separates data based on survival status.
+
+--------------------------------------------------------
+
+18. What observation can be made from the Titanic box plot?
+Answer:
+Observations:
+• Younger male passengers survived more compared to older males.
+• Female survival rate was higher.
+• Female age distribution varied more than males.
+
+--------------------------------------------------------
+
+19. What is the advantage of using box plot?
+Answer:
+
+Advantages:
+• Easy to understand distribution
+• Detects outliers quickly
+• Compares multiple categories
+• Summarizes data visually
+
+--------------------------------------------------------
+
+20. What is median?
+Answer:
+Median is the middle value of ordered data.
+
+It divides data into two equal halves.
+
+--------------------------------------------------------
+
+21. What are categorical variables?
+Answer:
+Categorical variables contain category-based values.
+
+Examples:
+• Gender
+• Survival status
+• Passenger class
+
+--------------------------------------------------------
+
+22. What are numerical variables?
+Answer:
+Numerical variables contain numeric values.
+
+Examples:
+• Age
+• Fare
+• Ticket price
+
+--------------------------------------------------------
+
+23. Why is visualization important in Data Science?
+Answer:
+Visualization helps:
+• Understand data patterns
+• Make decisions
+• Detect trends
+• Present insights clearly
+
+--------------------------------------------------------
+
+24. What is matplotlib.pyplot?
+Answer:
+matplotlib.pyplot is a plotting module used to create graphs and charts in Python.
+
+Example:
+
+import matplotlib.pyplot as plt
+
+--------------------------------------------------------
+
+25. What does plt.show() do?
+Answer:
+plt.show() displays the generated graph or plot.
+
+Example:
+
+plt.show()
+
+--------------------------------------------------------
+
+26. What is the difference between Box Plot and Histogram?
+
+Box Plot:
+• Shows quartiles and median
+• Detects outliers
+• Good for comparison
+
+Histogram:
+• Shows frequency distribution
+• Displays frequency bars
+• Good for distribution analysis
+
+--------------------------------------------------------
+
+27. What type of analysis is done in this practical?
+Answer:
+Exploratory Data Analysis (EDA) is performed using visualization techniques.
+
+--------------------------------------------------------
+
+28. Can box plots compare multiple groups?
+Answer:
+Yes.
+
+Box plots are useful for comparing distributions between different categories.
+
+Example:
+• Male vs Female
+• Survived vs Not Survived
+
+--------------------------------------------------------
+
+29. What are the important components of a box plot?
+Answer:
+
+Components:
+• Median
+• Quartiles
+• Whiskers
+• Outliers
+• Interquartile Range (IQR)
+
+--------------------------------------------------------
+
+30. What is the conclusion of this practical?
+Answer:
+In this practical, we used the Titanic dataset to create box plots for analyzing age distribution based on gender and survival status.
+
+We observed:
+• Data distribution
+• Passenger survival trends
+• Presence of outliers
+
+Thus, box plots are very useful for visualizing statistical distribution and comparing categories.

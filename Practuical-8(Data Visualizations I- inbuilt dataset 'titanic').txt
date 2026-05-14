@@ -1,0 +1,803 @@
+CODE:
+
+!pip install seaborn --break-system-packages
+
+import seaborn as sns
+import matplotlib.pyplot as plt
+import pandas as pd
+
+titanic = sns.load_dataset('titanic')
+
+print(titanic.to_string())
+
+print("\n========== DATASET INFORMATION ==========\n")
+
+print(titanic.info())
+
+print("\n========== DATASET SHAPE ==========\n")
+
+print(titanic.shape)
+
+print("\n========== MISSING VALUES ==========\n")
+
+print(titanic.isnull().sum())
+
+plt.figure(figsize=(6,5))
+
+sns.countplot(
+    x='survived',
+    data=titanic
+)
+
+plt.title("Survival Count")
+
+plt.xlabel("Survived (0 = No, 1 = Yes)")
+plt.ylabel("Number of Passengers")
+
+plt.show()
+
+plt.figure(figsize=(6,5))
+
+sns.countplot(
+    x='sex',
+    hue='survived',
+    data=titanic
+)
+
+plt.title("Survival Based on Gender")
+
+plt.xlabel("Gender")
+plt.ylabel("Count")
+
+plt.show()
+
+plt.figure(figsize=(6,5))
+
+sns.countplot(
+    x='pclass',
+    data=titanic
+)
+
+plt.title("Passenger Class Distribution")
+
+plt.xlabel("Passenger Class")
+plt.ylabel("Count")
+
+plt.show()
+
+plt.figure(figsize=(8,5))
+
+sns.histplot(
+    titanic['age'].dropna(),
+    bins=30,
+    kde=False
+)
+
+plt.title("Age Distribution of Passengers")
+
+plt.xlabel("Age")
+plt.ylabel("Frequency")
+
+plt.show()
+
+plt.figure(figsize=(8,5))
+
+sns.boxplot(
+    x='sex',
+    y='age',
+    data=titanic
+)
+
+plt.title("Box Plot of Age vs Gender")
+
+plt.xlabel("Gender")
+plt.ylabel("Age")
+
+plt.show()
+
+plt.figure(figsize=(8,5))
+
+sns.histplot(
+    titanic['fare'].dropna(),
+    bins=30,
+    kde=False
+)
+
+plt.title("Fare Distribution of Titanic Passengers")
+
+plt.xlabel("Fare")
+plt.ylabel("Number of Passengers")
+
+plt.show()
+
+
+
+TITLE OF THE ASSIGNMENT:
+
+Assignment No: 8
+
+Title of the Assignment:
+Data Visualizations I
+
+1. Use the inbuilt dataset 'titanic'. The dataset contains 891 rows and contains information about the passengers who boarded the unfortunate Titanic ship. Use the Seaborn library to see if we can find any patterns in the data.
+
+2. Write a code to check how the price of the ticket (column name: 'fare') for each passenger is distributed by plotting a histogram.
+
+
+
+WHAT THIS PRACTICAL DOES:
+
+This practical performs Data Visualization using the Titanic dataset with the help of Seaborn and Matplotlib libraries.
+
+The practical includes:
+
+1. Loading Titanic Dataset
+   → Loads the inbuilt Titanic dataset from Seaborn
+
+2. Dataset Analysis
+   → Displays dataset information, shape, and missing values
+
+3. Survival Analysis
+   → Visualizes survival count of passengers
+
+4. Gender-wise Survival Analysis
+   → Compares survival based on gender
+
+5. Passenger Class Analysis
+   → Displays distribution of passenger classes
+
+6. Age Distribution Visualization
+   → Shows histogram of passenger age
+
+7. Box Plot Visualization
+   → Detects age distribution and outliers based on gender
+
+8. Fare Distribution Analysis
+   → Displays histogram of ticket fare values
+
+
+
+PROPER CODE EXPLANATION LINE BY LINE:
+
+!pip install seaborn --break-system-packages
+
+→ Installs Seaborn library.
+→ Seaborn is used for statistical data visualization.
+
+import seaborn as sns
+
+→ Imports Seaborn library using alias sns.
+
+import matplotlib.pyplot as plt
+
+→ Imports Matplotlib plotting module.
+→ Used for displaying graphs and charts.
+
+import pandas as pd
+
+→ Imports Pandas library for dataframe handling.
+
+titanic = sns.load_dataset('titanic')
+
+→ Loads the Titanic dataset directly from Seaborn.
+→ Dataset contains passenger details such as:
+   - age
+   - sex
+   - fare
+   - class
+   - survival status
+
+print(titanic.to_string())
+
+→ Displays the complete Titanic dataset in table format.
+
+print("\n========== DATASET INFORMATION ==========\n")
+
+→ Prints heading for dataset information.
+
+print(titanic.info())
+
+→ Displays detailed dataset information such as:
+   - number of rows
+   - number of columns
+   - data types
+   - non-null values
+
+print("\n========== DATASET SHAPE ==========\n")
+
+→ Prints heading for dataset shape.
+
+print(titanic.shape)
+
+→ Displays dimensions of dataset.
+→ Output format:
+   (rows, columns)
+
+print("\n========== MISSING VALUES ==========\n")
+
+→ Prints heading for missing values.
+
+print(titanic.isnull().sum())
+
+→ Checks missing values column-wise.
+
+→ isnull()
+   detects null values.
+
+→ sum()
+   counts total null values in each column.
+
+plt.figure(figsize=(6,5))
+
+→ Creates a new graph figure with width 6 and height 5.
+
+sns.countplot(
+    x='survived',
+    data=titanic
+)
+
+→ Creates count plot for survival column.
+→ Shows number of passengers who survived and who did not survive.
+
+plt.title("Survival Count")
+
+→ Sets graph title.
+
+plt.xlabel("Survived (0 = No, 1 = Yes)")
+
+→ Labels X-axis.
+
+plt.ylabel("Number of Passengers")
+
+→ Labels Y-axis.
+
+plt.show()
+
+→ Displays the graph.
+
+plt.figure(figsize=(6,5))
+
+→ Creates another graph figure.
+
+sns.countplot(
+    x='sex',
+    hue='survived',
+    data=titanic
+)
+
+→ Creates count plot grouped by gender and survival.
+→ hue='survived'
+   separates bars based on survival category.
+
+→ Helps analyze:
+   - male survival
+   - female survival
+
+plt.title("Survival Based on Gender")
+
+→ Sets title of graph.
+
+plt.xlabel("Gender")
+
+→ Labels X-axis.
+
+plt.ylabel("Count")
+
+→ Labels Y-axis.
+
+plt.show()
+
+→ Displays the graph.
+
+plt.figure(figsize=(6,5))
+
+→ Creates new figure.
+
+sns.countplot(
+    x='pclass',
+    data=titanic
+)
+
+→ Displays count of passengers in each passenger class.
+
+→ pclass values:
+   1 → First Class
+   2 → Second Class
+   3 → Third Class
+
+plt.title("Passenger Class Distribution")
+
+→ Sets graph title.
+
+plt.xlabel("Passenger Class")
+
+→ Labels X-axis.
+
+plt.ylabel("Count")
+
+→ Labels Y-axis.
+
+plt.show()
+
+→ Displays graph.
+
+plt.figure(figsize=(8,5))
+
+→ Creates histogram figure.
+
+sns.histplot(
+    titanic['age'].dropna(),
+    bins=30,
+    kde=False
+)
+
+→ Creates histogram of passenger age.
+
+→ dropna()
+   removes missing age values.
+
+→ bins=30
+   divides data into 30 intervals.
+
+→ kde=False
+   disables density curve.
+
+plt.title("Age Distribution of Passengers")
+
+→ Sets title of histogram.
+
+plt.xlabel("Age")
+
+→ Labels X-axis.
+
+plt.ylabel("Frequency")
+
+→ Labels Y-axis.
+
+plt.show()
+
+→ Displays histogram.
+
+plt.figure(figsize=(8,5))
+
+→ Creates figure for boxplot.
+
+sns.boxplot(
+    x='sex',
+    y='age',
+    data=titanic
+)
+
+→ Creates boxplot between gender and age.
+
+→ Helps visualize:
+   - median age
+   - quartiles
+   - outliers
+
+plt.title("Box Plot of Age vs Gender")
+
+→ Sets graph title.
+
+plt.xlabel("Gender")
+
+→ Labels X-axis.
+
+plt.ylabel("Age")
+
+→ Labels Y-axis.
+
+plt.show()
+
+→ Displays boxplot.
+
+plt.figure(figsize=(8,5))
+
+→ Creates histogram figure for fare.
+
+sns.histplot(
+    titanic['fare'].dropna(),
+    bins=30,
+    kde=False
+)
+
+→ Creates histogram for passenger ticket fare.
+
+→ Shows fare distribution of passengers.
+
+→ Higher bars indicate more passengers in that fare range.
+
+plt.title("Fare Distribution of Titanic Passengers")
+
+→ Sets graph title.
+
+plt.xlabel("Fare")
+
+→ Labels X-axis.
+
+plt.ylabel("Number of Passengers")
+
+→ Labels Y-axis.
+
+plt.show()
+
+→ Displays fare histogram.
+
+
+
+VIVA QUESTIONS AND ANSWERS:
+
+1. What is Data Visualization?
+Answer:
+Data Visualization is the graphical representation of data using charts, graphs, and plots.
+
+It helps:
+
+Understand data easily
+
+Find patterns and trends
+
+Detect outliers
+
+Make better decisions
+
+
+
+2. What is the objective of this practical?
+Answer:
+The objective of this practical is:
+
+To perform data visualization using Python
+
+To analyze Titanic dataset using Seaborn
+
+To find patterns in data
+
+To plot histogram for ticket fare distribution
+
+3. What is Seaborn?
+Answer:
+Seaborn is a Python data visualization library built on top of Matplotlib.
+
+It provides:
+
+Attractive plots
+
+Statistical visualizations
+
+Easy-to-use functions
+
+Import statement:
+
+import seaborn as sns
+
+
+4. Why is Seaborn used?
+Answer:
+Seaborn is used because:
+
+It creates attractive visualizations
+
+Less coding is required
+
+Supports statistical plots
+
+Works well with Pandas dataframes
+
+5. What is the Titanic Dataset?
+Answer:
+Titanic dataset contains information about passengers who travelled on the Titanic ship.
+
+It contains:
+
+891 rows
+
+15 columns
+
+Features include:
+
+Age
+
+Gender
+
+Fare
+
+Passenger class
+
+Survival status
+
+
+
+6. How do you load Titanic dataset in Seaborn?
+Answer:
+
+dataset = sns.load_dataset('titanic')
+
+This loads the Titanic dataset directly from Seaborn.
+
+7. What are distribution plots?
+Answer:
+Distribution plots help visualize how data values are distributed.
+
+They help understand:
+
+Mean
+
+Median
+
+Variance
+
+Frequency
+
+Examples:
+
+Distplot
+
+Jointplot
+
+Rugplot
+
+
+
+8. What is Distplot?
+Answer:
+Distplot displays the distribution of a continuous variable using a histogram.
+
+Example:
+
+sns.distplot(dataset['age'])
+
+It helps analyze frequency distribution.
+
+
+
+9. What is KDE in Distplot?
+Answer:
+KDE stands for Kernel Density Estimation.
+
+It displays a smooth probability density curve over the histogram.
+
+To remove KDE:
+
+sns.distplot(dataset['age'], kde=False)
+
+10. What is Joint Plot?
+Answer:
+Joint Plot combines:
+
+Two distribution plots
+
+One scatter plot
+
+It helps analyze relationship between two variables.
+
+Example:
+
+sns.jointplot(x='age', y='fare', data=dataset)
+
+
+11. What is Hex Plot in Joint Plot?
+Answer:
+Hex plot displays data using hexagonal bins.
+
+Darker hexagons indicate:
+
+Higher number of observations
+
+Example:
+
+kind='hex'
+
+12. What is Rug Plot?
+Answer:
+Rug Plot draws small vertical lines for each data point along the axis.
+
+Example:
+
+sns.rugplot(dataset['fare'])
+
+It helps visualize data density.
+
+
+
+13. What are categorical plots?
+Answer:
+Categorical plots visualize categorical data against numeric or categorical variables.
+
+Examples:
+
+Bar plot
+
+Count plot
+
+Box plot
+
+Violin plot
+
+
+
+14. What is a Bar Plot?
+Answer:
+Bar plot displays aggregate values like:
+
+Mean
+
+Sum
+
+Standard deviation
+
+Example:
+
+sns.barplot(x='sex', y='age', data=dataset)
+
+
+15. What is Count Plot?
+Answer:
+Count plot shows the number of observations in each category.
+
+Example:
+
+sns.countplot(x='sex', data=dataset)
+
+It counts male and female passengers.
+
+
+
+16. What is a Box Plot?
+Answer:
+Box plot shows data distribution using quartiles.
+
+It displays:
+
+Median
+
+Quartiles
+
+Outliers
+
+Example:
+
+sns.boxplot(x='sex', y='age', data=dataset)
+
+
+17. What are outliers in Box Plot?
+Answer:
+Outliers are abnormal data points that lie far away from normal values.
+
+In box plots, outliers are shown using dots.
+
+18. What is Violin Plot?
+Answer:
+Violin plot combines:
+
+Box plot
+
+Density plot
+
+It shows complete data distribution.
+
+Example:
+
+sns.violinplot(x='sex', y='age', data=dataset)
+
+
+19. What is the advantage of Violin Plot over Box Plot?
+Answer:
+Violin plot provides more detailed distribution information than box plot.
+
+It shows:
+
+Density of data
+
+Shape of distribution
+
+20. Which parameter adds another categorical variable in violin plot?
+Answer:
+The hue parameter is used.
+
+Example:
+
+sns.violinplot(x='sex', y='age', data=dataset, hue='survived')
+
+
+21. What is Strip Plot?
+Answer:
+Strip plot displays scatter points for categorical data.
+
+Example:
+
+sns.stripplot(x='sex', y='age', data=dataset)
+
+
+22. What is jitter in Strip Plot?
+Answer:
+Jitter adds random noise to avoid overlapping points.
+
+Example:
+
+jitter=True
+
+This improves visualization.
+
+23. What is Swarm Plot?
+Answer:
+Swarm plot is similar to strip plot but avoids overlapping points.
+
+Example:
+
+sns.swarmplot(x='sex', y='age', data=dataset)
+
+
+24. What is Heat Map?
+Answer:
+Heat map displays correlation values using colors in matrix form.
+
+Example:
+
+sns.heatmap(corr)
+
+Higher correlation is shown using lighter colors.
+
+
+
+25. What is correlation?
+Answer:
+Correlation measures relationship between two variables.
+
+Values range from:
+
+-1 to +1
+
+Interpretation:
+
++1 → strong positive relation
+
+-1 → strong negative relation
+
+0 → no relation
+
+26. What is corr() function?
+Answer:
+corr() calculates correlation between numeric columns.
+
+Example:
+
+dataset.corr()
+
+27. What is annot=True in Heatmap?
+Answer:
+annot=True displays correlation values inside heatmap cells.
+
+Example:
+
+sns.heatmap(corr, annot=True)
+
+28. What is Cluster Map?
+Answer:
+Cluster map groups similar rows and columns using hierarchical clustering.
+
+It helps identify similar patterns in data.
+
+29. Why is histogram used for fare column?
+Answer:
+Histogram is used to visualize distribution of ticket fare values.
+
+Example:
+
+sns.histplot(dataset['fare'], bins=10)
+
+It shows frequency of passengers for different fare ranges.
+
+
+
+30. What is the conclusion of this practical?
+Answer:
+In this practical, we used Seaborn library to visualize Titanic dataset using:
+
+Distribution plots
+
+Categorical plots
+
+Matrix plots
+
+We analyzed patterns and relationships in data and visualized ticket fare distribution using histogram.

@@ -1,0 +1,1244 @@
+1. CODE
+
+# Upload the csv in the home page of jupyter notebook
+
+import pandas as pd
+import numpy as np
+import matplotlib.pyplot as plt
+
+from sklearn.model_selection import train_test_split
+from sklearn.preprocessing import StandardScaler
+from sklearn.linear_model import LogisticRegression
+
+from sklearn.metrics import (
+    confusion_matrix,
+    accuracy_score,
+    precision_score,
+    recall_score
+)
+
+data = pd.read_csv("Social_Network_Ads.csv")
+
+print("\nSocial Network Ads Dataset")
+print(data)
+
+print("\nFirst 5 Rows")
+print(data.head())
+
+print("\nMissing Values")
+print(data.isnull().sum())
+
+data['Gender'] = data['Gender'].replace({
+    'Male': 1,
+    'Female': 0
+})
+
+print("\nDataset After Encoding")
+print(data.head())
+
+print("\nCovariance Matrix")
+print(data.cov())
+
+x = data[['Age', 'EstimatedSalary']]
+
+y = data['Purchased']
+
+xtrain, xtest, ytrain, ytest = train_test_split(
+    x,
+    y,
+    test_size=0.25,
+    random_state=0
+)
+
+sc = StandardScaler()
+
+xtrain = sc.fit_transform(xtrain)
+
+xtest = sc.transform(xtest)
+
+logreg = LogisticRegression()
+
+logreg.fit(xtrain, ytrain)
+
+y_pred = logreg.predict(xtest)
+
+print("\nPredicted Values")
+print(y_pred)
+
+cm = confusion_matrix(ytest, y_pred)
+
+print("\nConfusion Matrix")
+print(cm)
+
+TN = cm[0][0]
+
+FP = cm[0][1]
+
+FN = cm[1][0]
+
+TP = cm[1][1]
+
+print("\nTrue Positive (TP) =", TP)
+
+print("True Negative (TN) =", TN)
+
+print("False Positive (FP) =", FP)
+
+print("False Negative (FN) =", FN)
+
+accuracy = accuracy_score(ytest, y_pred)
+
+print("\nAccuracy =", accuracy)
+
+error_rate = 1 - accuracy
+
+print("\nError Rate =", error_rate)
+
+precision = precision_score(ytest, y_pred)
+
+print("\nPrecision =", precision)
+
+recall = recall_score(ytest, y_pred)
+
+print("\nRecall =", recall)
+
+plt.scatter(
+    xtest[:, 0],
+    xtest[:, 1],
+    c=y_pred
+)
+
+plt.xlabel("Age")
+
+plt.ylabel("Estimated Salary")
+
+plt.title("Logistic Regression Classification")
+
+plt.show()
+
+
+
+2. TITLE
+
+Assignment No: 5
+
+TITLE:
+IMPLEMENT LOGISTIC REGRESSION USING PYTHON TO PERFORM CLASSIFICATION ON SOCIAL_NETWORK_ADS DATASET
+
+
+
+3. WHAT THE PRACTICAL DOES / AIM
+
+This practical demonstrates Logistic Regression using the Social_Network_Ads dataset.
+
+The main aim of this practical is:
+- To implement Logistic Regression
+- To perform binary classification
+- To classify users based on Age and Estimated Salary
+- To predict whether a user purchased the product or not
+- To evaluate classification model performance
+
+The practical uses:
+- Pandas for data handling
+- NumPy for numerical operations
+- Matplotlib for visualization
+- Scikit-learn for machine learning
+
+The dataset contains:
+- Gender
+- Age
+- Estimated Salary
+- Purchased
+
+Target variable:
+- Purchased
+- 1 → User purchased product
+- 0 → User did not purchase product
+
+Operations performed in this practical:
+- Loading dataset
+- Handling missing values
+- Encoding categorical data
+- Feature selection
+- Feature scaling
+- Splitting dataset
+- Training Logistic Regression model
+- Predicting output classes
+- Generating confusion matrix
+- Calculating accuracy
+- Calculating precision
+- Calculating recall
+- Plotting classification graph
+
+Evaluation metrics used:
+- Confusion Matrix
+- Accuracy
+- Error Rate
+- Precision
+- Recall
+
+
+
+4. DETAILED LINE-BY-LINE CODE EXPLANATION
+
+# Upload the csv in the home page of jupyter notebook
+
+Explanation:
+This instruction tells the user to:
+- Download CSV dataset
+- Upload it into Jupyter Notebook working directory
+
+Dataset used:
+Social_Network_Ads.csv
+
+
+
+import pandas as pd
+
+Explanation:
+Imports Pandas library.
+
+Pandas is used for:
+- Data handling
+- Creating DataFrames
+- Reading CSV files
+- Data analysis
+
+pd is alias for pandas.
+
+
+
+import numpy as np
+
+Explanation:
+Imports NumPy library.
+
+NumPy is used for:
+- Numerical calculations
+- Mathematical operations
+- Array operations
+
+np is alias for numpy.
+
+
+
+import matplotlib.pyplot as plt
+
+Explanation:
+Imports pyplot module from Matplotlib.
+
+Used for:
+- Data visualization
+- Graph plotting
+- Scatter plots
+- Charts
+
+plt is alias for pyplot.
+
+
+
+from sklearn.model_selection import train_test_split
+
+Explanation:
+Imports train_test_split() function.
+
+Used to split dataset into:
+- Training data
+- Testing data
+
+Training data:
+Used to train model.
+
+Testing data:
+Used to evaluate model.
+
+
+
+from sklearn.preprocessing import StandardScaler
+
+Explanation:
+Imports StandardScaler.
+
+Used for feature scaling.
+
+Feature scaling:
+Converts values into same range.
+
+This improves:
+- Model performance
+- Training speed
+- Accuracy
+
+
+
+from sklearn.linear_model import LogisticRegression
+
+Explanation:
+Imports LogisticRegression model.
+
+Logistic Regression is a supervised machine learning algorithm used for:
+- Classification problems
+- Binary prediction
+- Probability estimation
+
+
+
+from sklearn.metrics import (
+    confusion_matrix,
+    accuracy_score,
+    precision_score,
+    recall_score
+)
+
+Explanation:
+Imports evaluation metrics.
+
+1. confusion_matrix
+→ Evaluates prediction results.
+
+2. accuracy_score
+→ Calculates prediction accuracy.
+
+3. precision_score
+→ Calculates precision.
+
+4. recall_score
+→ Calculates recall.
+
+
+
+data = pd.read_csv("Social_Network_Ads.csv")
+
+Explanation:
+Reads CSV dataset.
+
+pd.read_csv():
+Loads dataset into DataFrame.
+
+Dataset stored in variable data.
+
+
+
+print("\nSocial Network Ads Dataset")
+
+Explanation:
+Displays heading before dataset.
+
+\n creates new line.
+
+
+
+print(data)
+
+Explanation:
+Displays complete dataset.
+
+Useful for:
+- Understanding dataset structure
+- Viewing rows and columns
+
+
+
+print("\nFirst 5 Rows")
+
+Explanation:
+Displays heading for first 5 rows.
+
+
+
+print(data.head())
+
+Explanation:
+head():
+Displays first 5 rows of dataset.
+
+Useful for:
+- Quick dataset inspection
+- Understanding columns
+
+
+
+print("\nMissing Values")
+
+Explanation:
+Displays heading for missing values section.
+
+
+
+print(data.isnull().sum())
+
+Explanation:
+Checks missing values.
+
+isnull():
+Returns True for missing values.
+
+sum():
+Counts total missing values column-wise.
+
+Useful for:
+- Data preprocessing
+- Cleaning dataset
+
+
+
+data['Gender'] = data['Gender'].replace({
+    'Male': 1,
+    'Female': 0
+})
+
+Explanation:
+Encodes categorical Gender values into numerical form.
+
+Conversion:
+- Male → 1
+- Female → 0
+
+Machine learning models require numerical data.
+
+replace():
+Used to replace values.
+
+
+
+print("\nDataset After Encoding")
+
+Explanation:
+Displays heading after encoding.
+
+
+
+print(data.head())
+
+Explanation:
+Displays updated dataset after Gender encoding.
+
+
+
+print("\nCovariance Matrix")
+
+Explanation:
+Displays heading for covariance matrix.
+
+
+
+print(data.cov())
+
+Explanation:
+cov():
+Calculates covariance matrix.
+
+Covariance shows:
+Relationship between variables.
+
+Positive covariance:
+Variables increase together.
+
+Negative covariance:
+One variable increases while another decreases.
+
+
+
+x = data[['Age', 'EstimatedSalary']]
+
+Explanation:
+Selects feature variables.
+
+Features used:
+- Age
+- EstimatedSalary
+
+These are input variables.
+
+
+
+y = data['Purchased']
+
+Explanation:
+Selects target variable.
+
+Purchased:
+Output class to predict.
+
+- 1 → Purchased
+- 0 → Not purchased
+
+
+
+xtrain, xtest, ytrain, ytest = train_test_split(
+    x,
+    y,
+    test_size=0.25,
+    random_state=0
+)
+
+Explanation:
+Splits dataset into training and testing data.
+
+Parameters:
+
+x
+→ Input features
+
+y
+→ Output labels
+
+test_size=0.25
+→ 25% data used for testing
+→ 75% data used for training
+
+random_state=0
+→ Ensures same random split every time.
+
+Output:
+- xtrain → training inputs
+- xtest → testing inputs
+- ytrain → training outputs
+- ytest → testing outputs
+
+
+
+sc = StandardScaler()
+
+Explanation:
+Creates StandardScaler object.
+
+Used for scaling features.
+
+
+
+xtrain = sc.fit_transform(xtrain)
+
+Explanation:
+Fits scaler on training data and transforms it.
+
+fit_transform():
+- Learns scaling parameters
+- Applies scaling
+
+Scaling formula:
+Mean = 0
+Standard deviation = 1
+
+This improves Logistic Regression performance.
+
+
+
+xtest = sc.transform(xtest)
+
+Explanation:
+Transforms testing data using same scaling learned from training data.
+
+Important:
+Testing data should never be fit separately.
+
+
+
+logreg = LogisticRegression()
+
+Explanation:
+Creates Logistic Regression model object.
+
+logreg stores machine learning model.
+
+
+
+logreg.fit(xtrain, ytrain)
+
+Explanation:
+Trains Logistic Regression model.
+
+fit():
+Learns relationship between:
+- Inputs
+- Output classes
+
+Model learns patterns from training data.
+
+
+
+y_pred = logreg.predict(xtest)
+
+Explanation:
+Predicts output classes using testing data.
+
+Possible outputs:
+- 0
+- 1
+
+Predictions stored in y_pred.
+
+
+
+print("\nPredicted Values")
+
+Explanation:
+Displays heading for predicted outputs.
+
+
+
+print(y_pred)
+
+Explanation:
+Displays predicted class values.
+
+
+
+cm = confusion_matrix(ytest, y_pred)
+
+Explanation:
+Creates confusion matrix.
+
+Confusion matrix compares:
+- Actual values
+- Predicted values
+
+Used to calculate:
+- Accuracy
+- Precision
+- Recall
+- Error Rate
+
+
+
+print("\nConfusion Matrix")
+
+Explanation:
+Displays heading for confusion matrix.
+
+
+
+print(cm)
+
+Explanation:
+Displays confusion matrix table.
+
+Structure:
+
+[[TN FP]
+ [FN TP]]
+
+
+
+TN = cm[0][0]
+
+Explanation:
+Extracts True Negative value.
+
+True Negative:
+Actual = Negative
+Predicted = Negative
+
+
+
+FP = cm[0][1]
+
+Explanation:
+Extracts False Positive value.
+
+False Positive:
+Actual = Negative
+Predicted = Positive
+
+
+
+FN = cm[1][0]
+
+Explanation:
+Extracts False Negative value.
+
+False Negative:
+Actual = Positive
+Predicted = Negative
+
+
+
+TP = cm[1][1]
+
+Explanation:
+Extracts True Positive value.
+
+True Positive:
+Actual = Positive
+Predicted = Positive
+
+
+
+print("\nTrue Positive (TP) =", TP)
+
+Explanation:
+Displays True Positive value.
+
+
+
+print("True Negative (TN) =", TN)
+
+Explanation:
+Displays True Negative value.
+
+
+
+print("False Positive (FP) =", FP)
+
+Explanation:
+Displays False Positive value.
+
+
+
+print("False Negative (FN) =", FN)
+
+Explanation:
+Displays False Negative value.
+
+
+
+accuracy = accuracy_score(ytest, y_pred)
+
+Explanation:
+Calculates model accuracy.
+
+Accuracy formula:
+
+Accuracy =
+(TP + TN) /
+(TP + TN + FP + FN)
+
+Higher accuracy means better model.
+
+
+
+print("\nAccuracy =", accuracy)
+
+Explanation:
+Displays accuracy value.
+
+
+
+error_rate = 1 - accuracy
+
+Explanation:
+Calculates error rate.
+
+Error Rate:
+Percentage of incorrect predictions.
+
+Lower error rate means better model.
+
+
+
+print("\nError Rate =", error_rate)
+
+Explanation:
+Displays error rate.
+
+
+
+precision = precision_score(ytest, y_pred)
+
+Explanation:
+Calculates precision.
+
+Precision formula:
+
+Precision =
+TP / (TP + FP)
+
+High precision means:
+Fewer false positives.
+
+
+
+print("\nPrecision =", precision)
+
+Explanation:
+Displays precision value.
+
+
+
+recall = recall_score(ytest, y_pred)
+
+Explanation:
+Calculates recall.
+
+Recall formula:
+
+Recall =
+TP / (TP + FN)
+
+High recall means:
+Fewer false negatives.
+
+
+
+print("\nRecall =", recall)
+
+Explanation:
+Displays recall value.
+
+
+
+plt.scatter(
+    xtest[:, 0],
+    xtest[:, 1],
+    c=y_pred
+)
+
+Explanation:
+Creates scatter plot.
+
+xtest[:, 0]
+→ Age values
+
+xtest[:, 1]
+→ Estimated Salary values
+
+c=y_pred
+→ Colors points according to predicted class.
+
+Used for:
+- Visualizing classification
+- Understanding predictions
+
+
+
+plt.xlabel("Age")
+
+Explanation:
+Labels X-axis as Age.
+
+
+
+plt.ylabel("Estimated Salary")
+
+Explanation:
+Labels Y-axis as Estimated Salary.
+
+
+
+plt.title("Logistic Regression Classification")
+
+Explanation:
+Adds title to graph.
+
+
+
+plt.show()
+
+Explanation:
+Displays scatter plot graph.
+
+Used to visualize:
+- Classification results
+- Predicted classes
+- Data distribution
+
+
+5. VIVA PART
+
+1. What is Logistic Regression?
+
+Answer:
+Logistic Regression is a supervised machine learning algorithm used for classification problems. It predicts categorical output values such as:
+
+- Yes/No
+- True/False
+- Spam/Not Spam
+
+It is mainly used for binary classification problems where only two output classes are present.
+
+
+
+2. Why is Logistic Regression called a classification algorithm?
+
+Answer:
+Logistic Regression predicts categories or classes instead of continuous values.
+
+For example:
+- Whether a customer will buy a product or not
+- Whether a patient has cancer or not
+
+Since the output belongs to predefined classes, it is called a classification algorithm.
+
+
+
+3. What is the main objective of this practical?
+
+Answer:
+The objective of this practical is:
+- To implement Logistic Regression on the Social_Network_Ads dataset
+- To classify users based on features
+- To evaluate model performance using:
+  - Confusion Matrix
+  - Accuracy
+  - Precision
+  - Recall
+  - Error Rate
+
+
+
+4. What is the Social_Network_Ads dataset?
+
+Answer:
+The Social_Network_Ads dataset contains user information such as:
+- Age
+- Estimated Salary
+
+The target variable predicts whether the user purchased the product or not.
+
+It is commonly used for binary classification problems.
+
+
+
+5. What is binary classification?
+
+Answer:
+Binary classification means the output has only two possible classes.
+
+Examples:
+- 0 or 1
+- Yes or No
+- Spam or Not Spam
+
+Logistic Regression is mainly used for binary classification.
+
+
+
+6. What is the difference between Linear Regression and Logistic Regression?
+
+Answer:
+
+Linear Regression
+- Used for prediction
+- Output is continuous
+- Uses straight line equation
+- Predicts values like price
+
+Logistic Regression
+- Used for classification
+- Output is categorical
+- Uses sigmoid function
+- Predicts classes like Yes/No
+
+Example:
+- Linear Regression → House Price Prediction
+- Logistic Regression → Disease Prediction
+
+
+
+7. What is the sigmoid function?
+
+Answer:
+The sigmoid function converts output values into probabilities between 0 and 1.
+
+Formula:
+
+σ(x) = 1 / (1 + e^-x)
+
+It gives an S-shaped curve.
+
+- If output > 0.5 → class 1
+- If output < 0.5 → class 0
+
+
+
+8. Why is sigmoid function used in Logistic Regression?
+
+Answer:
+The sigmoid function is used because classification requires probability output between 0 and 1.
+
+It helps convert linear output into probabilities for decision making.
+
+
+
+9. What are the types of Logistic Regression?
+
+Answer:
+
+1. Binary Logistic Regression
+- Only two output classes
+- Example: Spam/Not Spam
+
+2. Multinomial Logistic Regression
+- More than two categories
+- Example: Predicting fruit type
+
+3. Ordinal Logistic Regression
+- Ordered categories
+- Example: Ratings from 1 to 5
+
+
+
+10. What is a confusion matrix?
+
+Answer:
+A confusion matrix is a table used to evaluate classification model performance.
+
+It compares:
+- Actual values
+- Predicted values
+
+It helps calculate:
+- Accuracy
+- Precision
+- Recall
+- Error Rate
+
+
+
+11. What is True Positive (TP)?
+
+Answer:
+True Positive means:
+- Actual class is positive
+- Predicted class is also positive
+
+Example:
+A patient has cancer and the model also predicts cancer.
+
+
+
+12. What is True Negative (TN)?
+
+Answer:
+True Negative means:
+- Actual class is negative
+- Predicted class is also negative
+
+Example:
+A patient does not have cancer and the model predicts no cancer.
+
+
+
+13. What is False Positive (FP)?
+
+Answer:
+False Positive means:
+- Actual class is negative
+- Predicted class is positive
+
+It is also called Type-1 Error.
+
+Example:
+Model predicts disease but the patient is healthy.
+
+
+
+14. What is False Negative (FN)?
+
+Answer:
+False Negative means:
+- Actual class is positive
+- Predicted class is negative
+
+It is also called Type-2 Error.
+
+Example:
+Model predicts healthy but the patient actually has disease.
+
+
+
+15. What is Accuracy?
+
+Answer:
+Accuracy measures how many predictions are correct.
+
+Formula:
+
+Accuracy =
+(TP + TN) /
+(TP + TN + FP + FN)
+
+Higher accuracy means better model performance.
+
+
+
+16. What is Error Rate?
+
+Answer:
+Error Rate measures incorrect predictions.
+
+Formula:
+
+Error Rate =
+(FP + FN) /
+(TP + TN + FP + FN)
+
+Lower error rate indicates better performance.
+
+
+
+17. What is Precision?
+
+Answer:
+Precision measures how many predicted positive values are actually positive.
+
+Formula:
+
+Precision =
+TP / (TP + FP)
+
+High precision means fewer false positives.
+
+
+
+18. What is Recall?
+
+Answer:
+Recall measures how many actual positive cases are correctly predicted.
+
+Formula:
+
+Recall =
+TP / (TP + FN)
+
+High recall means fewer false negatives.
+
+
+
+19. Why is feature scaling used?
+
+Answer:
+Feature scaling is used to bring all feature values into the same range.
+
+It improves:
+- Training speed
+- Model accuracy
+- Performance of gradient-based algorithms
+
+
+
+20. What is data preprocessing?
+
+Answer:
+Data preprocessing means cleaning and preparing data before training.
+
+It includes:
+- Handling missing values
+- Encoding categorical values
+- Feature scaling
+- Removing unwanted data
+
+
+
+21. Why do we split the dataset into training and testing data?
+
+Answer:
+Dataset splitting helps evaluate model performance on unseen data.
+
+Usually:
+- 80% → training
+- 20% → testing
+
+Training data is used to learn patterns, and testing data is used for evaluation.
+
+
+
+22. What is LogisticRegression() in sklearn?
+
+Answer:
+LogisticRegression() is a class from Scikit-learn used to create a logistic regression model.
+
+Example:
+
+from sklearn.linear_model import LogisticRegression
+logreg = LogisticRegression()
+
+
+
+23. What does fit() function do?
+
+Answer:
+The fit() function trains the logistic regression model using training data.
+
+Example:
+
+logreg.fit(xtrain, ytrain)
+
+The model learns relationships between inputs and outputs.
+
+
+
+24. What does predict() function do?
+
+Answer:
+The predict() function predicts output classes using test data.
+
+Example:
+
+y_pred = logreg.predict(xtest)
+
+
+
+25. Which evaluation metrics are used in this practical?
+
+Answer:
+The following metrics are used:
+- Accuracy
+- Precision
+- Recall
+- Confusion Matrix
+- Error Rate
+
+These metrics help evaluate classification performance.
+
+
+
+26. What libraries are used in this practical?
+
+Answer:
+Main libraries used are:
+- NumPy
+- Pandas
+- Matplotlib
+- Scikit-learn
+
+Scikit-learn provides Logistic Regression and evaluation metrics.
+
+
+
+27. What is meant by probability in Logistic Regression?
+
+Answer:
+Logistic Regression predicts the probability of belonging to a class.
+
+Example:
+Probability = 0.85 means 85% chance that output belongs to class 1.
+
+
+
+28. Why is Logistic Regression popular?
+
+Answer:
+Logistic Regression is popular because:
+- Easy to implement
+- Fast training
+- Works well for binary classification
+- Gives probability outputs
+- Simple to understand
+
+
+
+29. What is overfitting in Logistic Regression?
+
+Answer:
+Overfitting occurs when the model learns training data too perfectly, including noise.
+
+As a result:
+- Training accuracy becomes high
+- Testing accuracy becomes low
+- The model fails on new data
+
+
+
+30. What is the conclusion of this practical?
+
+Answer:
+In this practical, we implemented Logistic Regression on the Social_Network_Ads dataset for classification.
+
+We:
+- Preprocessed the dataset
+- Trained the logistic regression model
+- Predicted output classes
+- Evaluated performance using confusion matrix and other metrics
+
+Thus, Logistic Regression is useful for solving binary classification problems effectively.

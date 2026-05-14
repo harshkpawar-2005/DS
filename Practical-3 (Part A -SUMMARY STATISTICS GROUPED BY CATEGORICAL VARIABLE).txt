@@ -1,0 +1,584 @@
+1. CODE
+
+# QUESTION 1
+# SUMMARY STATISTICS GROUPED BY CATEGORICAL VARIABLE
+
+import pandas as pd
+import numpy as np
+
+data = {
+    'Name' : ['A', 'B', 'C', 'D', 'E',
+              'F', 'G', 'H', 'I', 'J'],
+
+    'Age_Group' : ['Young', 'Young', 'Adult',
+                   'Adult', 'Senior',
+                   'Young', 'Adult',
+                   'Senior', 'Senior',
+                   'Young'],
+
+    'Income' : [25000, 27000, 40000,
+                42000, 50000,
+                26000, 41000,
+                52000, 51000,
+                28000]
+}
+
+df = pd.DataFrame(data)
+
+print("\nEmployee Dataset")
+print(df)
+
+grouped_data = df.groupby('Age_Group')
+
+print("\nSummary Statistics of Income Grouped by Age_Group")
+
+print(grouped_data['Income'].agg([
+    'mean',
+    'median',
+    'min',
+    'max',
+    'std'
+]))
+
+young = list(
+    df[df['Age_Group'] == 'Young']
+    ['Income']
+)
+
+adult = list(
+    df[df['Age_Group'] == 'Adult']
+    ['Income']
+)
+
+senior = list(
+    df[df['Age_Group'] == 'Senior']
+    ['Income']
+)
+
+print("\nIncome List for Young")
+print(young)
+
+print("\nIncome List for Adult")
+print(adult)
+
+print("\nIncome List for Senior")
+print(senior)
+
+
+
+2. TITLE
+
+TITLE: DESCRIPTIVE STATISTICS- MEASURES OF CENTRAL TENDENCY AND VARIABILITY
+
+
+
+3. WHAT THE PRACTICAL DOES / AIM
+
+This practical demonstrates Descriptive Statistics using Python.
+
+The main aim of this practical is:
+- To calculate summary statistics
+- To group numerical data using categorical variables
+- To understand measures of central tendency
+- To understand variability in data
+- To perform statistical analysis on grouped data
+
+The practical uses:
+- Pandas for dataset handling
+- NumPy for numerical operations
+
+Operations performed:
+- Creating dataset
+- Grouping data using categorical variables
+- Calculating mean
+- Calculating median
+- Finding minimum and maximum values
+- Calculating standard deviation
+- Creating separate lists for each category
+
+The dataset contains:
+- Employee names
+- Age groups
+- Income values
+
+Age_Group is the categorical variable.
+Income is the numerical variable.
+
+
+
+4. DETAILED LINE-BY-LINE CODE EXPLANATION
+
+# QUESTION 1
+# SUMMARY STATISTICS GROUPED BY CATEGORICAL VARIABLE
+
+Explanation:
+These are comments.
+
+Comments improve readability and explain purpose of code.
+
+Python ignores comments during execution.
+
+
+
+import pandas as pd
+
+Explanation:
+Imports Pandas library.
+
+Pandas is used for:
+- Creating DataFrames
+- Handling rows and columns
+- Data analysis
+- Statistical operations
+
+pd is alias for pandas.
+
+
+
+import numpy as np
+
+Explanation:
+Imports NumPy library.
+
+NumPy is used for:
+- Numerical operations
+- Mathematical calculations
+- Scientific computing
+
+np is alias for numpy.
+
+
+
+data = {
+
+Explanation:
+Creates a Python dictionary named data.
+
+Dictionary stores information in:
+key : value format
+
+Each key represents column name.
+
+
+
+'Name' : ['A', 'B', 'C', 'D', 'E', ...]
+
+Explanation:
+Stores employee names.
+
+This column identifies employees.
+
+
+
+'Age_Group' : ['Young', 'Young', 'Adult', ...]
+
+Explanation:
+Stores age categories.
+
+This is a categorical variable because:
+It contains categories instead of numbers.
+
+Categories used:
+- Young
+- Adult
+- Senior
+
+
+
+'Income' : [25000, 27000, 40000, ...]
+
+Explanation:
+Stores salary/income values.
+
+This is a numerical variable because:
+It contains numeric data.
+
+
+
+df = pd.DataFrame(data)
+
+Explanation:
+Converts dictionary into Pandas DataFrame.
+
+DataFrame:
+A two-dimensional table containing:
+- rows
+- columns
+
+Similar to Excel sheet.
+
+df stores complete dataset.
+
+
+
+print("\nEmployee Dataset")
+
+Explanation:
+Displays heading before dataset.
+
+\n adds new line.
+
+
+
+print(df)
+
+Explanation:
+Displays complete dataset.
+
+Useful for:
+- Checking dataset structure
+- Viewing rows and columns
+
+
+
+grouped_data = df.groupby('Age_Group')
+
+Explanation:
+Groups dataset based on Age_Group column.
+
+groupby():
+Creates groups using categorical values.
+
+Groups formed:
+- Young
+- Adult
+- Senior
+
+This allows statistical analysis category-wise.
+
+
+
+print("\nSummary Statistics of Income Grouped by Age_Group")
+
+Explanation:
+Displays heading for grouped statistics.
+
+
+
+print(grouped_data['Income'].agg([
+    'mean',
+    'median',
+    'min',
+    'max',
+    'std'
+]))
+
+Explanation:
+This line calculates summary statistics for Income column.
+
+grouped_data['Income']
+→ Selects Income column from grouped data.
+
+agg()
+→ Aggregate function used to apply multiple statistical operations together.
+
+Statistics calculated:
+
+1. mean
+→ Average income
+
+2. median
+→ Middle income value
+
+3. min
+→ Smallest income
+
+4. max
+→ Largest income
+
+5. std
+→ Standard deviation
+
+This displays statistics separately for:
+- Young
+- Adult
+- Senior
+
+Useful for comparing groups.
+
+
+
+young = list(
+    df[df['Age_Group'] == 'Young']
+    ['Income']
+)
+
+Explanation:
+Creates list of income values for Young group.
+
+Step-by-step:
+
+df['Age_Group'] == 'Young'
+→ Selects rows where age group is Young.
+
+['Income']
+→ Selects only Income column.
+
+list()
+→ Converts values into Python list.
+
+
+
+adult = list(
+    df[df['Age_Group'] == 'Adult']
+    ['Income']
+)
+
+Explanation:
+Creates income list for Adult category.
+
+Used for:
+- Separate analysis
+- Statistical calculations
+- Visualization
+
+
+
+senior = list(
+    df[df['Age_Group'] == 'Senior']
+    ['Income']
+)
+
+Explanation:
+Creates income list for Senior category.
+
+Now each category has separate numerical list.
+
+
+
+print("\nIncome List for Young")
+
+Explanation:
+Displays heading before Young income list.
+
+
+
+print(young)
+
+Explanation:
+Displays all income values belonging to Young category.
+
+
+
+print("\nIncome List for Adult")
+
+Explanation:
+Displays heading before Adult income list.
+
+
+
+print(adult)
+
+Explanation:
+Displays all income values belonging to Adult category.
+
+
+
+print("\nIncome List for Senior")
+
+Explanation:
+Displays heading before Senior income list.
+
+
+
+print(senior)
+
+Explanation:
+Displays all income values belonging to Senior category.
+
+These lists are useful for:
+- Statistical analysis
+- Visualization
+- Comparison between groups
+
+
+5. VIVA PART
+
+1. What is Statistics in Data Science?
+
+Answer:
+Statistics is the science of collecting, analyzing, and interpreting data.
+
+In Data Science, it helps to:
+- Understand data patterns
+- Summarize data
+- Make decisions
+
+It is the foundation for machine learning and data analysis.
+
+
+
+2. What is Mean?
+
+Answer:
+Mean is the average value of a dataset.
+
+Formula:
+
+Mean = ∑X / N
+
+It represents the central value but is affected by outliers.
+
+
+
+3. What is Median?
+
+Answer:
+Median is the middle value when data is arranged in order.
+
+- If odd → middle value
+- If even → average of two middle values
+
+It is not affected by outliers, so it is more reliable in skewed data.
+
+
+
+4. What is Mode?
+
+Answer:
+Mode is the most frequently occurring value in a dataset.
+
+Used for:
+- Categorical data
+- Identifying most common values
+
+
+
+5. Difference between Mean, Median, Mode
+
+Mean
+- Average
+- Affected by outliers
+- Used for numeric data
+
+Median
+- Middle value
+- Not affected by outliers
+- Used for numeric data
+
+Mode
+- Most frequent value
+- Not affected by outliers
+- Used for categorical data also
+
+
+
+6. What is Variance?
+
+Answer:
+Variance measures how much data values spread from the mean.
+
+- High variance → data widely spread
+- Low variance → data close to mean
+
+
+
+7. What is Standard Deviation?
+
+Answer:
+Standard deviation is the square root of variance.
+
+It tells:
+How much data deviates from the mean.
+
+- Low SD → stable data
+- High SD → more variation
+
+
+
+8. What is Data Visualization?
+
+Answer:
+Data visualization is the graphical representation of data.
+
+It helps to:
+- Understand patterns
+- Detect trends
+- Identify outliers
+
+Examples:
+- Bar chart
+- Histogram
+- Pie chart
+
+
+
+9. What is a Histogram?
+
+Answer:
+Histogram shows the distribution of numerical data.
+
+- Data divided into bins
+- Frequency is shown
+
+Used to understand:
+- Shape of data
+- Skewness
+
+
+
+10. What is a Bar Chart?
+
+Answer:
+Bar chart is used to compare categorical data.
+
+- X-axis → categories
+- Y-axis → values
+
+Example:
+Sales of different products.
+
+
+
+11. What is a Pie Chart?
+
+Answer:
+Pie chart shows proportions or percentages.
+
+- Circle divided into parts
+- Each part represents a category
+
+
+
+12. What is a Boxplot?
+
+Answer:
+Boxplot shows:
+- Median
+- Quartiles
+- Outliers
+
+Used for:
+- Detecting outliers
+- Understanding distribution
+
+
+
+13. What is Correlation?
+
+Answer:
+Correlation shows the relationship between two variables.
+
+- +1 → strong positive correlation
+- -1 → strong negative correlation
+- 0 → no relation
+
+
+
+14. What is Scatter Plot?
+
+Answer:
+Scatter plot shows relationship between two variables.
+
+- Each point represents a data value
+- Helps identify correlation
+
+
+
+15. What is the use of visualization in Data Science?
+
+Answer:
+Visualization helps:
+- Easy understanding of data
+- Detect hidden patterns
+- Communicate insights clearly

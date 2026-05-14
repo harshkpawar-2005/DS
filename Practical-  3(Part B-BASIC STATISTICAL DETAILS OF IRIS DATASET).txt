@@ -1,0 +1,577 @@
+1. CODE
+
+# QUESTION 2
+# BASIC STATISTICAL DETAILS OF IRIS DATASET
+
+import pandas as pd
+from sklearn.datasets import load_iris
+
+iris = load_iris()
+
+df = pd.DataFrame(
+    iris.data,
+    columns=iris.feature_names
+)
+
+df['species'] = iris.target
+
+df['species'] = df['species'].replace({
+    0 : 'Iris-setosa',
+    1 : 'Iris-versicolor',
+    2 : 'Iris-virginica'
+})
+
+print("\nIris Dataset")
+print(df)
+
+print("\nStatistical Details of Iris-setosa")
+
+setosa = df[df['species'] == 'Iris-setosa']
+
+print(setosa.describe())
+
+print("\nStatistical Details of Iris-versicolor")
+
+versicolor = df[df['species'] == 'Iris-versicolor']
+
+print(versicolor.describe())
+
+print("\nStatistical Details of Iris-virginica")
+
+virginica = df[df['species'] == 'Iris-virginica']
+
+print(virginica.describe())
+
+
+
+2. TITLE
+
+TITLE: DESCRIPTIVE STATISTICS- MEASURES OF CENTRAL TENDENCY AND VARIABILITY
+
+
+
+3. WHAT THE PRACTICAL DOES / AIM
+
+This practical demonstrates Descriptive Statistics using the Iris dataset.
+
+The main aim of this practical is:
+- To load the Iris dataset
+- To create a DataFrame using Pandas
+- To identify different flower species
+- To calculate statistical measures for each species
+- To understand measures of central tendency and variability
+
+The practical uses:
+- Pandas for data handling and analysis
+- Scikit-learn for loading Iris dataset
+
+Operations performed:
+- Loading Iris dataset
+- Creating DataFrame
+- Adding species labels
+- Replacing numerical labels with flower names
+- Filtering dataset species-wise
+- Calculating statistical summary using describe()
+
+The dataset contains three flower species:
+- Iris-setosa
+- Iris-versicolor
+- Iris-virginica
+
+Statistical measures calculated:
+- Count
+- Mean
+- Standard deviation
+- Minimum value
+- Maximum value
+- Percentiles
+- Quartiles
+
+
+
+4. DETAILED LINE-BY-LINE CODE EXPLANATION
+
+# QUESTION 2
+# BASIC STATISTICAL DETAILS OF IRIS DATASET
+
+Explanation:
+These are comments.
+
+Comments are used to:
+- Explain purpose of code
+- Improve readability
+- Help understanding
+
+Python ignores comments during execution.
+
+
+
+import pandas as pd
+
+Explanation:
+Imports Pandas library.
+
+Pandas is used for:
+- Data handling
+- Creating DataFrames
+- Data analysis
+- Statistical calculations
+
+pd is alias for pandas.
+
+
+
+from sklearn.datasets import load_iris
+
+Explanation:
+Imports load_iris() function from Scikit-learn datasets module.
+
+load_iris():
+Used to load built-in Iris dataset.
+
+Iris dataset is a famous machine learning dataset.
+
+It contains:
+- Measurements of iris flowers
+- Three flower species
+
+
+
+iris = load_iris()
+
+Explanation:
+Loads Iris dataset into variable named iris.
+
+The dataset contains:
+- Feature values
+- Target labels
+- Feature names
+- Dataset information
+
+Features include:
+- sepal length
+- sepal width
+- petal length
+- petal width
+
+
+
+df = pd.DataFrame(
+    iris.data,
+    columns=iris.feature_names
+)
+
+Explanation:
+Creates Pandas DataFrame from Iris dataset.
+
+iris.data:
+Contains numerical feature values.
+
+columns=iris.feature_names:
+Assigns column names to DataFrame.
+
+The DataFrame contains:
+- Rows → flower records
+- Columns → flower measurements
+
+This makes dataset easy to analyze.
+
+
+
+df['species'] = iris.target
+
+Explanation:
+Creates new column named species.
+
+iris.target contains numerical labels:
+- 0
+- 1
+- 2
+
+Each number represents flower species.
+
+
+
+df['species'] = df['species'].replace({
+    0 : 'Iris-setosa',
+    1 : 'Iris-versicolor',
+    2 : 'Iris-virginica'
+})
+
+Explanation:
+Replaces numerical labels with actual flower names.
+
+replace():
+Used to replace values.
+
+Conversion:
+- 0 → Iris-setosa
+- 1 → Iris-versicolor
+- 2 → Iris-virginica
+
+This improves readability and understanding.
+
+
+
+print("\nIris Dataset")
+
+Explanation:
+Displays heading before dataset.
+
+\n creates new line.
+
+
+
+print(df)
+
+Explanation:
+Displays complete Iris dataset.
+
+Useful for:
+- Understanding dataset structure
+- Viewing rows and columns
+- Checking species labels
+
+
+
+print("\nStatistical Details of Iris-setosa")
+
+Explanation:
+Displays heading for Iris-setosa statistics.
+
+
+
+setosa = df[df['species'] == 'Iris-setosa']
+
+Explanation:
+Filters dataset for only Iris-setosa flowers.
+
+Step-by-step:
+
+df['species'] == 'Iris-setosa'
+→ Checks rows where species is Iris-setosa.
+
+df[condition]
+→ Returns only matching rows.
+
+Filtered dataset stored in variable setosa.
+
+
+
+print(setosa.describe())
+
+Explanation:
+describe() calculates statistical summary.
+
+Statistics displayed:
+- count
+- mean
+- standard deviation
+- minimum value
+- maximum value
+- percentiles
+- quartiles
+
+This summary is calculated only for Iris-setosa species.
+
+
+
+print("\nStatistical Details of Iris-versicolor")
+
+Explanation:
+Displays heading for Iris-versicolor statistics.
+
+
+
+versicolor = df[df['species'] == 'Iris-versicolor']
+
+Explanation:
+Filters dataset for Iris-versicolor species only.
+
+Stores filtered dataset in variable versicolor.
+
+
+
+print(versicolor.describe())
+
+Explanation:
+Displays statistical summary for Iris-versicolor species.
+
+Useful for:
+- Comparing species
+- Understanding distribution
+- Identifying variation
+
+
+
+print("\nStatistical Details of Iris-virginica")
+
+Explanation:
+Displays heading for Iris-virginica statistics.
+
+
+
+virginica = df[df['species'] == 'Iris-virginica']
+
+Explanation:
+Filters dataset for Iris-virginica flowers only.
+
+Stores result in virginica variable.
+
+
+
+print(virginica.describe())
+
+Explanation:
+Displays statistical summary for Iris-virginica species.
+
+describe() calculates:
+- Mean
+- Standard deviation
+- Minimum value
+- Maximum value
+- Percentiles
+- Quartiles
+
+Useful for:
+- Data analysis
+- Species comparison
+- Statistical understanding
+
+
+
+IMPORTANT STATISTICAL TERMS USED IN describe()
+
+1. count
+→ Total number of records
+
+2. mean
+→ Average value
+
+3. std
+→ Standard deviation
+Measures spread of data
+
+4. min
+→ Smallest value
+
+5. 25%
+→ First quartile
+
+6. 50%
+→ Median value
+
+7. 75%
+→ Third quartile
+
+8. max
+→ Largest value
+
+
+
+WHY THIS PRACTICAL IS IMPORTANT
+
+This practical helps to:
+- Understand statistical analysis
+- Compare different species
+- Analyze data distribution
+- Learn descriptive statistics
+- Understand variability in datasets
+
+It is useful before:
+- Machine learning
+- Data preprocessing
+- Data visualization
+- Predictive analysis
+
+
+5. VIVA PART
+
+1. What is Statistics in Data Science?
+
+Answer:
+Statistics is the science of collecting, analyzing, and interpreting data.
+
+In Data Science, it helps to:
+- Understand data patterns
+- Summarize data
+- Make decisions
+
+It is the foundation for machine learning and data analysis.
+
+
+
+2. What is Mean?
+
+Answer:
+Mean is the average value of a dataset.
+
+Formula:
+
+Mean = ∑X / N
+
+It represents the central value but is affected by outliers.
+
+
+
+3. What is Median?
+
+Answer:
+Median is the middle value when data is arranged in order.
+
+- If odd → middle value
+- If even → average of two middle values
+
+It is not affected by outliers, so it is more reliable in skewed data.
+
+
+
+4. What is Mode?
+
+Answer:
+Mode is the most frequently occurring value in a dataset.
+
+Used for:
+- Categorical data
+- Identifying most common values
+
+
+
+5. Difference between Mean, Median, Mode
+
+Mean
+- Average
+- Affected by outliers
+- Used for numeric data
+
+Median
+- Middle value
+- Not affected by outliers
+- Used for numeric data
+
+Mode
+- Most frequent value
+- Not affected by outliers
+- Used for categorical data also
+
+
+
+6. What is Variance?
+
+Answer:
+Variance measures how much data values spread from the mean.
+
+- High variance → data widely spread
+- Low variance → data close to mean
+
+
+
+7. What is Standard Deviation?
+
+Answer:
+Standard deviation is the square root of variance.
+
+It tells:
+How much data deviates from the mean.
+
+- Low SD → stable data
+- High SD → more variation
+
+
+
+8. What is Data Visualization?
+
+Answer:
+Data visualization is the graphical representation of data.
+
+It helps to:
+- Understand patterns
+- Detect trends
+- Identify outliers
+
+Examples:
+- Bar chart
+- Histogram
+- Pie chart
+
+
+
+9. What is a Histogram?
+
+Answer:
+Histogram shows the distribution of numerical data.
+
+- Data divided into bins
+- Frequency is shown
+
+Used to understand:
+- Shape of data
+- Skewness
+
+
+
+10. What is a Bar Chart?
+
+Answer:
+Bar chart is used to compare categorical data.
+
+- X-axis → categories
+- Y-axis → values
+
+Example:
+Sales of different products.
+
+
+
+11. What is a Pie Chart?
+
+Answer:
+Pie chart shows proportions or percentages.
+
+- Circle divided into parts
+- Each part represents a category
+
+
+
+12. What is a Boxplot?
+
+Answer:
+Boxplot shows:
+- Median
+- Quartiles
+- Outliers
+
+Used for:
+- Detecting outliers
+- Understanding distribution
+
+
+
+13. What is Correlation?
+
+Answer:
+Correlation shows the relationship between two variables.
+
+- +1 → strong positive correlation
+- -1 → strong negative correlation
+- 0 → no relation
+
+
+
+14. What is Scatter Plot?
+
+Answer:
+Scatter plot shows relationship between two variables.
+
+- Each point represents a data value
+- Helps identify correlation
+
+
+
+15. What is the use of visualization in Data Science?
+
+Answer:
+Visualization helps:
+- Easy understanding of data
+- Detect hidden patterns
+- Communicate insights clearly

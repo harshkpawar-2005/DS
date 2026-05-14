@@ -1,0 +1,947 @@
+CODE:
+
+!pip install nltk --break-system-packages
+!pip install pandas --break-system-packages
+
+import nltk
+import pandas as pd
+import re
+import math
+
+from nltk.tokenize import sent_tokenize, word_tokenize
+from nltk.corpus import stopwords
+from nltk.stem import PorterStemmer, WordNetLemmatizer
+
+nltk.download('punkt')
+nltk.download('punkt_tab')
+nltk.download('stopwords')
+nltk.download('wordnet')
+nltk.download('averaged_perceptron_tagger')
+nltk.download('averaged_perceptron_tagger_eng')
+
+text = """
+Natural Language Processing is an important field of Artificial Intelligence.
+It helps computers understand human language.
+Applications of NLP include chatbots, speech recognition,
+machine translation, and sentiment analysis.
+"""
+
+print("\n========== ORIGINAL TEXT ==========\n")
+
+print(text)
+
+print("\n========== SENTENCE TOKENIZATION ==========\n")
+
+sentence_tokens = sent_tokenize(text)
+
+print(sentence_tokens)
+
+print("\n========== WORD TOKENIZATION ==========\n")
+
+word_tokens = word_tokenize(text)
+
+print(word_tokens)
+
+print("\n========== STOP WORD REMOVAL ==========\n")
+
+stop_words = set(stopwords.words("english"))
+
+clean_text = re.sub('[^a-zA-Z]', ' ', text)
+
+tokens = word_tokenize(clean_text.lower())
+
+filtered_text = []
+
+for word in tokens:
+
+    if word not in stop_words:
+
+        filtered_text.append(word)
+
+print("Tokenized Words :")
+
+print(tokens)
+
+print("\nFiltered Words :")
+
+print(filtered_text)
+
+print("\n========== STEMMING ==========\n")
+
+ps = PorterStemmer()
+
+example_words = ["wait", "waiting", "waited", "waits"]
+
+for word in example_words:
+
+    root_word = ps.stem(word)
+
+    print(word, "->", root_word)
+
+print("\n========== LEMMATIZATION ==========\n")
+
+lemmatizer = WordNetLemmatizer()
+
+lemma_text = "studies studying cries cry"
+
+tokenization = word_tokenize(lemma_text)
+
+for word in tokenization:
+
+    print("Lemma for", word, "is",
+          lemmatizer.lemmatize(word))
+
+print("\n========== POS TAGGING ==========\n")
+
+data = "The pink sweater fit her perfectly"
+
+words = word_tokenize(data)
+
+for word in words:
+
+    print(nltk.pos_tag([word]))
+
+print("\n========== TF-IDF ==========\n")
+
+documentA = "Jupiter is the largest planet"
+
+documentB = "Mars is the fourth planet from the Sun"
+
+bagOfWordsA = documentA.split(' ')
+
+bagOfWordsB = documentB.split(' ')
+
+uniqueWords = set(bagOfWordsA).union(set(bagOfWordsB))
+
+print("Unique Words :")
+
+print(uniqueWords)
+
+numOfWordsA = dict.fromkeys(uniqueWords, 0)
+
+for word in bagOfWordsA:
+
+    numOfWordsA[word] += 1
+
+numOfWordsB = dict.fromkeys(uniqueWords, 0)
+
+for word in bagOfWordsB:
+
+    numOfWordsB[word] += 1
+
+def computeTF(wordDict, bagOfWords):
+
+    tfDict = {}
+
+    bagOfWordsCount = len(bagOfWords)
+
+    for word, count in wordDict.items():
+
+        tfDict[word] = count / float(bagOfWordsCount)
+
+    return tfDict
+
+tfA = computeTF(numOfWordsA, bagOfWordsA)
+
+tfB = computeTF(numOfWordsB, bagOfWordsB)
+
+print("\nTF for Document A :")
+
+print(tfA)
+
+print("\nTF for Document B :")
+
+print(tfB)
+
+def computeIDF(documents):
+
+    N = len(documents)
+
+    idfDict = dict.fromkeys(documents[0].keys(), 0)
+
+    for document in documents:
+
+        for word, val in document.items():
+
+            if val > 0:
+
+                idfDict[word] += 1
+
+    for word, val in idfDict.items():
+
+        idfDict[word] = math.log(N / float(val))
+
+    return idfDict
+
+idfs = computeIDF([numOfWordsA, numOfWordsB])
+
+print("\nIDF Values :")
+
+print(idfs)
+
+def computeTFIDF(tfBagOfWords, idfs):
+
+    tfidf = {}
+
+    for word, val in tfBagOfWords.items():
+
+        tfidf[word] = val * idfs[word]
+
+    return tfidf
+
+tfidfA = computeTFIDF(tfA, idfs)
+
+tfidfB = computeTFIDF(tfB, idfs)
+
+df = pd.DataFrame([tfidfA, tfidfB])
+
+print("\n========== TF-IDF TABLE ==========\n")
+
+print(df)
+
+
+
+TITLE:
+
+Assignment No: 7
+
+Title of the Assignment:
+1. Extract Sample document and apply following document preprocessing methods:
+Tokenization, POS Tagging, stop words removal, Stemming and Lemmatization.
+
+2. Create representation of document by calculating Term Frequency and Inverse Document
+Frequency.
+
+
+
+WHAT THIS PRACTICAL DOES:
+
+This practical performs Natural Language Processing (NLP) operations on text data.
+
+The practical includes:
+
+1. Sentence Tokenization
+   → Splitting paragraph into sentences
+
+2. Word Tokenization
+   → Splitting sentence into words
+
+3. Stop Word Removal
+   → Removing unnecessary common words
+
+4. Stemming
+   → Reducing words to root form
+
+5. Lemmatization
+   → Converting words into meaningful base form
+
+6. POS Tagging
+   → Identifying grammatical role of words
+
+7. TF Calculation
+   → Measuring frequency of words in a document
+
+8. IDF Calculation
+   → Measuring importance of words across documents
+
+9. TF-IDF Representation
+   → Converting text into numerical representation for machine learning
+
+
+
+PROPER CODE EXPLANATION LINE BY LINE:
+
+!pip install nltk --break-system-packages
+
+→ Installs the NLTK library.
+→ NLTK is used for Natural Language Processing tasks.
+
+!pip install pandas --break-system-packages
+
+→ Installs Pandas library.
+→ Pandas is used for table representation and data handling.
+
+import nltk
+
+→ Imports NLTK library.
+
+import pandas as pd
+
+→ Imports Pandas library using alias pd.
+
+import re
+
+→ Imports Regular Expression library.
+→ Used for text cleaning.
+
+import math
+
+→ Imports math library.
+→ Used for logarithm calculations in IDF.
+
+from nltk.tokenize import sent_tokenize, word_tokenize
+
+→ Imports sentence tokenizer and word tokenizer.
+
+from nltk.corpus import stopwords
+
+→ Imports stopwords dataset from NLTK.
+
+from nltk.stem import PorterStemmer, WordNetLemmatizer
+
+→ Imports stemming and lemmatization classes.
+
+nltk.download('punkt')
+
+→ Downloads tokenizer package used for tokenization.
+
+nltk.download('punkt_tab')
+
+→ Downloads punkt tokenizer table.
+
+nltk.download('stopwords')
+
+→ Downloads stopword dataset.
+
+nltk.download('wordnet')
+
+→ Downloads WordNet dictionary for lemmatization.
+
+nltk.download('averaged_perceptron_tagger')
+
+→ Downloads POS tagging model.
+
+nltk.download('averaged_perceptron_tagger_eng')
+
+→ Downloads English POS tagger model.
+
+text = """ """
+
+→ Stores multiline paragraph text into variable.
+
+print(text)
+
+→ Displays original text.
+
+sentence_tokens = sent_tokenize(text)
+
+→ Splits paragraph into sentences.
+
+print(sentence_tokens)
+
+→ Displays sentence tokens.
+
+word_tokens = word_tokenize(text)
+
+→ Splits paragraph into individual words.
+
+print(word_tokens)
+
+→ Displays word tokens.
+
+stop_words = set(stopwords.words("english"))
+
+→ Loads English stop words into a set.
+
+clean_text = re.sub('[^a-zA-Z]', ' ', text)
+
+→ Removes special characters and numbers.
+→ Keeps only alphabets.
+
+tokens = word_tokenize(clean_text.lower())
+
+→ Converts text into lowercase and tokenizes it.
+
+filtered_text = []
+
+→ Creates empty list for storing filtered words.
+
+for word in tokens:
+
+→ Loops through all words.
+
+if word not in stop_words:
+
+→ Checks whether word is not a stop word.
+
+filtered_text.append(word)
+
+→ Adds meaningful word to filtered list.
+
+print(tokens)
+
+→ Displays original tokenized words.
+
+print(filtered_text)
+
+→ Displays words after stopword removal.
+
+ps = PorterStemmer()
+
+→ Creates Porter Stemmer object.
+
+example_words = ["wait", "waiting", "waited", "waits"]
+
+→ Stores example words for stemming.
+
+root_word = ps.stem(word)
+
+→ Converts words into root form.
+
+print(word, "->", root_word)
+
+→ Displays original word and stemmed word.
+
+lemmatizer = WordNetLemmatizer()
+
+→ Creates lemmatizer object.
+
+lemma_text = "studies studying cries cry"
+
+→ Stores sample text for lemmatization.
+
+tokenization = word_tokenize(lemma_text)
+
+→ Tokenizes words.
+
+lemmatizer.lemmatize(word)
+
+→ Converts words into meaningful dictionary form.
+
+print("Lemma for", word, "is", ...)
+
+→ Displays lemma of each word.
+
+data = "The pink sweater fit her perfectly"
+
+→ Stores sentence for POS tagging.
+
+words = word_tokenize(data)
+
+→ Tokenizes sentence into words.
+
+nltk.pos_tag([word])
+
+→ Assigns grammatical tag to each word.
+
+Examples:
+
+NN → Noun
+
+VB → Verb
+
+JJ → Adjective
+
+documentA = "Jupiter is the largest planet"
+
+documentB = "Mars is the fourth planet from the Sun"
+
+→ Creates two sample documents.
+
+bagOfWordsA = documentA.split(' ')
+
+→ Splits document A into words.
+
+bagOfWordsB = documentB.split(' ')
+
+→ Splits document B into words.
+
+uniqueWords = set(...)
+
+→ Finds all unique words from both documents.
+
+dict.fromkeys(uniqueWords, 0)
+
+→ Creates dictionary with word count initialized to 0.
+
+numOfWordsA[word] += 1
+
+→ Counts occurrences of words in document A.
+
+numOfWordsB[word] += 1
+
+→ Counts occurrences of words in document B.
+
+def computeTF(wordDict, bagOfWords):
+
+→ Defines function to calculate Term Frequency.
+
+bagOfWordsCount = len(bagOfWords)
+
+→ Finds total words in document.
+
+tfDict[word] = count / float(bagOfWordsCount)
+
+→ Calculates TF value.
+
+tfA = computeTF(...)
+
+→ Computes TF for document A.
+
+tfB = computeTF(...)
+
+→ Computes TF for document B.
+
+def computeIDF(documents):
+
+→ Defines function for Inverse Document Frequency.
+
+N = len(documents)
+
+→ Finds total number of documents.
+
+idfDict[word] += 1
+
+→ Counts how many documents contain the word.
+
+idfDict[word] = math.log(N / float(val))
+
+→ Calculates IDF using logarithm formula.
+
+idfs = computeIDF(...)
+
+→ Computes IDF values.
+
+def computeTFIDF(tfBagOfWords, idfs):
+
+→ Defines TF-IDF calculation function.
+
+tfidf[word] = val * idfs[word]
+
+→ Calculates TF-IDF value.
+
+tfidfA = computeTFIDF(tfA, idfs)
+
+→ Computes TF-IDF for document A.
+
+tfidfB = computeTFIDF(tfB, idfs)
+
+→ Computes TF-IDF for document B.
+
+df = pd.DataFrame([tfidfA, tfidfB])
+
+→ Converts TF-IDF dictionaries into table format.
+
+print(df)
+
+→ Displays final TF-IDF table.
+
+
+
+VIVA QUESTIONS AND ANSWERS:
+
+1. What is Text Analytics?
+Answer:
+Text Analytics is the process of analyzing unstructured text data to extract useful information, patterns, and insights.
+
+It is also called:
+
+Text Mining
+
+Examples:
+
+Sentiment analysis
+
+Spam detection
+
+Review analysis
+
+Chat analysis
+
+
+
+2. What is NLP?
+Answer:
+NLP stands for Natural Language Processing.
+
+It is a branch of Artificial Intelligence that helps computers understand and process human language.
+
+Examples:
+
+Chatbots
+
+Google Translate
+
+Voice assistants
+
+Natural Language Processing
+
+3. What is the objective of this practical?
+Answer:
+The objective of this practical is:
+
+To perform text preprocessing operations
+
+To apply:
+
+Tokenization
+
+POS Tagging
+
+Stopword Removal
+
+Stemming
+
+Lemmatization
+
+To calculate:
+
+TF
+
+IDF
+
+TF-IDF
+
+for document representation.
+
+4. What is Tokenization?
+Answer:
+Tokenization is the process of breaking text into smaller units called tokens.
+
+Tokens can be:
+
+Words
+
+Sentences
+
+Example:
+
+"I love AI"
+becomes:
+
+["I", "love", "AI"]
+
+
+5. What are the types of Tokenization?
+Answer:
+
+1. Sentence Tokenization
+Splits paragraph into sentences.
+
+2. Word Tokenization
+Splits sentence into words.
+
+Example:
+
+sent_tokenize()
+word_tokenize()
+
+6. Why is Tokenization important?
+Answer:
+Tokenization is important because machine learning algorithms cannot directly understand raw text.
+
+It converts text into manageable pieces for further processing.
+
+7. What are Stop Words?
+Answer:
+Stop words are commonly used words that do not add much meaning to the sentence.
+
+Examples:
+
+is
+
+am
+
+the
+
+are
+
+an
+
+These words are usually removed during preprocessing.
+
+
+
+8. Why do we remove stop words?
+Answer:
+Stop words are removed because:
+
+They increase unnecessary data
+
+They do not contribute much meaning
+
+They reduce processing efficiency
+
+Removing them improves model performance.
+
+9. What is Stemming?
+Answer:
+Stemming is the process of reducing words to their root form by removing suffixes.
+
+Examples:
+
+waiting → wait
+
+studies → studi
+
+It may not always produce meaningful words.
+
+
+
+10. What is Lemmatization?
+Answer:
+Lemmatization converts words into their meaningful dictionary base form called lemma.
+
+Examples:
+
+studies → study
+
+cries → cry
+
+It gives more meaningful output than stemming.
+
+
+
+11. Difference between Stemming and Lemmatization?
+Answer:
+
+Stemming	Lemmatization
+Removes suffix directly	Uses dictionary and context
+Faster	More accurate
+May give meaningless words	Gives meaningful root word
+Example: studies → studi	Example: studies → study
+
+
+12. What is POS Tagging?
+Answer:
+POS Tagging means assigning grammatical tags to words.
+
+POS stands for:
+
+Parts Of Speech
+
+Examples:
+
+NN → Noun
+
+VB → Verb
+
+JJ → Adjective
+
+
+
+13. Why is POS Tagging used?
+Answer:
+POS Tagging helps:
+
+Understand sentence structure
+
+Identify grammatical roles
+
+Improve NLP tasks like sentiment analysis and text understanding
+
+14. What is Bag of Words (BoW)?
+Answer:
+Bag of Words is a text representation technique.
+
+It converts text into numerical vectors based on word frequency.
+
+It ignores:
+
+Grammar
+
+Word order
+
+
+
+15. Why is Bag of Words called “Bag”?
+Answer:
+It is called “Bag” because:
+
+Word order is ignored
+
+Only word occurrence matters
+
+Sentence structure information is lost.
+
+16. What is Term Frequency (TF)?
+Answer:
+TF measures how frequently a word appears in a document.
+
+Formula:
+
+TF = Number of times word appears / Total words in document
+
+Higher TF means the word is important in that document.
+
+
+
+17. What is Inverse Document Frequency (IDF)?
+Answer:
+IDF measures how important a word is across all documents.
+
+Words appearing in many documents get lower IDF.
+
+Formula:
+
+IDF = log(N / df)
+
+Where:
+
+N = total documents
+
+df = number of documents containing the word
+
+
+
+18. What is TF-IDF?
+Answer:
+TF-IDF stands for:
+
+Term Frequency × Inverse Document Frequency
+
+Formula:
+
+TF-IDF = TF × IDF
+
+It gives high importance to:
+
+Frequent words in a document
+
+Rare words in the corpus
+
+
+
+19. Why is TF-IDF important?
+Answer:
+TF-IDF helps identify important words in documents.
+
+It is widely used in:
+
+Search engines
+
+Document classification
+
+Recommendation systems
+
+NLP applications
+
+20. What is the disadvantage of TF-IDF?
+Answer:
+TF-IDF cannot understand semantics or word meaning.
+
+Example:
+
+funny and humorous have similar meaning
+
+TF-IDF treats them as different words
+
+It also becomes expensive for very large vocabularies.
+
+
+
+21. What is corpus in NLP?
+Answer:
+Corpus means a collection of text documents used for analysis.
+
+Example:
+
+Multiple articles
+
+Reviews
+
+Emails
+
+22. Which library is used in this practical?
+Answer:
+The main library used is:
+
+NLTK
+
+NLTK provides tools for:
+
+Tokenization
+
+Stemming
+
+POS Tagging
+
+Stopword removal
+
+23. What is Porter Stemmer?
+Answer:
+Porter Stemmer is a stemming algorithm in NLTK used to convert words into root form.
+
+Example:
+
+from nltk.stem import PorterStemmer
+
+24. What is WordNet Lemmatizer?
+Answer:
+WordNet Lemmatizer is used for lemmatization.
+
+It converts words into meaningful dictionary base forms.
+
+Example:
+
+from nltk.stem import WordNetLemmatizer
+
+25. Why do machine learning models require numerical data?
+Answer:
+Machine learning algorithms work using mathematical calculations.
+
+Text data must be converted into numerical vectors using:
+
+BoW
+
+TF-IDF
+
+before training models.
+
+26. What is vocabulary in TF-IDF?
+Answer:
+Vocabulary is the collection of all unique words present in all documents.
+
+27. Why is preprocessing important in NLP?
+Answer:
+Preprocessing:
+
+Cleans text
+
+Removes noise
+
+Improves accuracy
+
+Reduces computation
+
+It prepares text for analysis and machine learning.
+
+28. What is word_tokenize()?
+Answer:
+word_tokenize() splits a sentence into words.
+
+Example:
+
+word_tokenize(text)
+
+29. What is sent_tokenize()?
+Answer:
+sent_tokenize() splits paragraph into sentences.
+
+Example:
+
+sent_tokenize(text)
+
+30. What is the conclusion of this practical?
+Answer:
+In this practical, we performed text preprocessing operations such as:
+
+Tokenization
+
+POS Tagging
+
+Stopword Removal
+
+Stemming
+
+Lemmatization
+
+We also calculated:
+
+TF
+
+IDF
+
+TF-IDF
+
+for document representation and text analysis using NLP techniques.

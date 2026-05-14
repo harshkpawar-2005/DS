@@ -1,0 +1,890 @@
+1. CODE
+
+!pip install pandas numpy scikit-learn --break-system-packages (if numpy is not installed)
+
+import pandas as pd
+import numpy as np
+from sklearn import preprocessing
+from sklearn.preprocessing import MinMaxScaler
+
+url = "https://archive.ics.uci.edu/ml/machine-learning-databases/iris/iris.data"
+
+col_names = [
+    'Sepal_Length',
+    'Sepal_Width',
+    'Petal_Length',
+    'Petal_Width',
+    'Species'
+]
+
+df = pd.read_csv(url, names=col_names)
+
+print("\nFirst 5 Rows of Dataset")
+print(df.head())
+
+print("\nLast 5 Rows of Dataset")
+print(df.tail())
+
+print("\nShape of Dataset (Rows, Columns)")
+print(df.shape)
+
+print("\nColumn Names")
+print(df.columns)
+
+print("\nIndex Information")
+print(df.index)
+
+print("\nData Types")
+print(df.dtypes)
+
+print("\nStatistical Summary")
+print(df.describe())
+
+print("\nCheck Missing Values")
+print(df.isnull())
+
+print("\nMissing Values Column Wise")
+print(df.isnull().sum())
+
+print("\nTotal Missing Values in Dataset")
+print(df.isnull().sum().sum())
+
+print("\nMissing Values Row Wise")
+print(df.isnull().sum(axis=1))
+
+print("\nVariable Description")
+print("""
+1. Sepal_Length  -> Length of sepal in cm
+2. Sepal_Width   -> Width of sepal in cm
+3. Petal_Length  -> Length of petal in cm
+4. Petal_Width   -> Width of petal in cm
+5. Species       -> Type of Iris flower
+""")
+
+print("\nBefore Type Conversion")
+print(df.dtypes)
+
+df['Petal_Length'] = df['Petal_Length'].astype(int)
+
+print("\nAfter Type Conversion")
+print(df.dtypes)
+
+numeric_columns = [
+    'Sepal_Length',
+    'Sepal_Width',
+    'Petal_Length',
+    'Petal_Width'
+]
+
+scaler = MinMaxScaler()
+
+df_normalized = df.copy()
+
+df_normalized[numeric_columns] = scaler.fit_transform(
+    df_normalized[numeric_columns]
+)
+
+print("\nNormalized Dataset")
+print(df_normalized.head())
+
+print("\nUnique Species Before Encoding")
+print(df['Species'].unique())
+
+label_encoder = preprocessing.LabelEncoder()
+
+df['Species'] = label_encoder.fit_transform(df['Species'])
+
+print("\nUnique Species After Encoding")
+print(df['Species'].unique())
+
+print("\nDataset After Label Encoding")
+print(df.head())
+
+print("\nFirst 3 Rows")
+print(df[0:3])
+
+print("\nSelect Specific Columns")
+print(df.loc[:, ["Sepal_Length", "Petal_Length"]])
+
+print("\nFirst 5 Rows using iloc")
+print(df.iloc[:5, :])
+
+print("\nFirst 3 Columns")
+print(df.iloc[:, :3])
+
+print("\nSubset of First 5 Rows and First 3 Columns")
+print(df.iloc[:5, :3])
+
+
+
+2. TITLE
+
+TITLE: DATA WRANGLING I
+
+
+
+3. WHAT THE PRACTICAL DOES / AIM
+
+This practical is based on Data Wrangling using the Iris dataset.
+
+The main aim of this practical is:
+- To load an open-source dataset into Python
+- To understand the structure of the dataset
+- To perform preprocessing operations
+- To check missing values
+- To analyze the dataset statistically
+- To normalize numerical values
+- To convert categorical data into numerical form
+
+In this practical, the Iris flower dataset is used from the UCI Machine Learning Repository.
+
+Dataset Source:
+https://archive.ics.uci.edu/ml/machine-learning-databases/iris/iris.data
+
+The practical uses:
+- Pandas for data handling
+- NumPy for numerical operations
+- Scikit-learn for preprocessing and normalization
+
+Operations performed:
+- Reading dataset
+- Viewing rows and columns
+- Checking shape and data types
+- Detecting missing values
+- Statistical summary
+- Type conversion
+- Min-Max normalization
+- Label encoding
+- Row and column selection
+
+
+
+4. DETAILED LINE-BY-LINE CODE EXPLANATION
+
+!pip install pandas numpy scikit-learn --break-system-packages
+
+Explanation:
+This command installs the required Python libraries.
+
+Libraries installed:
+- pandas
+- numpy
+- scikit-learn
+
+These libraries are needed because:
+- Pandas handles datasets and tables
+- NumPy performs numerical calculations
+- Scikit-learn provides preprocessing and machine learning tools
+
+--break-system-packages is used mainly in Linux systems when package installation permission issues occur.
+
+
+
+import pandas as pd
+
+Explanation:
+This line imports the Pandas library.
+
+Pandas is mainly used for:
+- Reading datasets
+- Handling rows and columns
+- Cleaning data
+- Data analysis
+
+as pd:
+- pd is an alias (short name)
+- Instead of writing pandas.read_csv(), we can write pd.read_csv()
+
+
+
+import numpy as np
+
+Explanation:
+This line imports NumPy library.
+
+NumPy is used for:
+- Numerical computations
+- Mathematical operations
+- Arrays and matrices
+- Fast calculations
+
+np is a short alias for numpy.
+
+
+
+from sklearn import preprocessing
+
+Explanation:
+This imports preprocessing tools from Scikit-learn.
+
+Preprocessing means:
+Preparing raw data before machine learning.
+
+Examples:
+- Encoding
+- Scaling
+- Normalization
+
+
+
+from sklearn.preprocessing import MinMaxScaler
+
+Explanation:
+This imports MinMaxScaler.
+
+MinMaxScaler is used for normalization.
+
+Normalization means:
+Converting all numerical values into a fixed range between 0 and 1.
+
+Why normalization is needed:
+Some values may be very large and dominate smaller values.
+Normalization keeps all features on the same scale.
+
+Formula used internally:
+
+(X - Xmin) / (Xmax - Xmin)
+
+
+
+url = "https://archive.ics.uci.edu/ml/machine-learning-databases/iris/iris.data"
+
+Explanation:
+This line stores the dataset URL into a variable named url.
+
+The dataset is directly taken from the internet.
+
+This dataset contains:
+- Measurements of iris flowers
+- Different flower species
+
+
+
+col_names = [
+    'Sepal_Length',
+    'Sepal_Width',
+    'Petal_Length',
+    'Petal_Width',
+    'Species'
+]
+
+Explanation:
+This creates a list of column names.
+
+The original dataset does not contain column headings.
+So we manually provide names.
+
+Meaning of columns:
+- Sepal_Length → Length of sepal
+- Sepal_Width → Width of sepal
+- Petal_Length → Length of petal
+- Petal_Width → Width of petal
+- Species → Flower type
+
+
+
+df = pd.read_csv(url, names=col_names)
+
+Explanation:
+This line reads the dataset from the URL.
+
+pd.read_csv():
+- Reads CSV files
+- Converts data into DataFrame format
+
+names=col_names:
+Assigns custom column names to dataset.
+
+The dataset is stored in variable df.
+
+DataFrame:
+A 2D table containing rows and columns.
+
+
+
+print("\nFirst 5 Rows of Dataset")
+print(df.head())
+
+Explanation:
+df.head() displays the first 5 rows of dataset.
+
+Purpose:
+- Quick preview of dataset
+- Understand structure of data
+
+
+
+print("\nLast 5 Rows of Dataset")
+print(df.tail())
+
+Explanation:
+df.tail() displays last 5 rows.
+
+Used to:
+- Check ending data
+- Verify dataset loading properly
+
+
+
+print("\nShape of Dataset (Rows, Columns)")
+print(df.shape)
+
+Explanation:
+df.shape gives dimensions of dataset.
+
+Output format:
+(rows, columns)
+
+For Iris dataset:
+(150, 5)
+
+Meaning:
+- 150 rows
+- 5 columns
+
+
+
+print("\nColumn Names")
+print(df.columns)
+
+Explanation:
+Displays all column names present in dataset.
+
+Useful for:
+- Understanding attributes
+- Accessing columns correctly
+
+
+
+print("\nIndex Information")
+print(df.index)
+
+Explanation:
+Displays index values.
+
+Index means:
+Row numbering of dataset.
+
+Usually starts from 0.
+
+
+
+print("\nData Types")
+print(df.dtypes)
+
+Explanation:
+Displays datatype of every column.
+
+Possible datatypes:
+- int
+- float
+- object
+- string
+
+Important because:
+Machine learning models require proper datatypes.
+
+
+
+print("\nStatistical Summary")
+print(df.describe())
+
+Explanation:
+describe() gives statistical summary of numerical columns.
+
+It displays:
+- count
+- mean
+- standard deviation
+- minimum value
+- maximum value
+- quartiles
+
+Useful for understanding dataset distribution.
+
+
+
+print("\nCheck Missing Values")
+print(df.isnull())
+
+Explanation:
+Checks whether any value is missing.
+
+Output:
+- True → missing value exists
+- False → no missing value
+
+Missing values create problems in machine learning.
+
+
+
+print("\nMissing Values Column Wise")
+print(df.isnull().sum())
+
+Explanation:
+Counts missing values in each column.
+
+Useful to know:
+Which column contains missing data.
+
+
+
+print("\nTotal Missing Values in Dataset")
+print(df.isnull().sum().sum())
+
+Explanation:
+Calculates total missing values in entire dataset.
+
+First sum():
+Column-wise sum
+
+Second sum():
+Total dataset sum
+
+
+
+print("\nMissing Values Row Wise")
+print(df.isnull().sum(axis=1))
+
+Explanation:
+Counts missing values row by row.
+
+axis=1 means:
+Perform operation horizontally across columns.
+
+
+
+print("\nVariable Description")
+
+Explanation:
+Displays meaning of all variables.
+
+Useful in:
+- Reports
+- Documentation
+- Viva explanation
+
+
+
+print("\nBefore Type Conversion")
+print(df.dtypes)
+
+Explanation:
+Shows current datatypes before conversion.
+
+Used for comparison.
+
+
+
+df['Petal_Length'] = df['Petal_Length'].astype(int)
+
+Explanation:
+Converts Petal_Length datatype into integer.
+
+astype(int):
+Changes datatype.
+
+Why type conversion is needed:
+Sometimes datasets contain wrong datatypes.
+
+Correct datatype improves:
+- Processing
+- Memory usage
+- Machine learning compatibility
+
+
+
+print("\nAfter Type Conversion")
+print(df.dtypes)
+
+Explanation:
+Displays updated datatype after conversion.
+
+Used to verify conversion.
+
+
+
+numeric_columns = [
+    'Sepal_Length',
+    'Sepal_Width',
+    'Petal_Length',
+    'Petal_Width'
+]
+
+Explanation:
+Stores all numerical column names in a list.
+
+These columns will be normalized.
+
+Species column is excluded because it is categorical.
+
+
+
+scaler = MinMaxScaler()
+
+Explanation:
+Creates object of MinMaxScaler.
+
+This object will perform normalization.
+
+
+
+df_normalized = df.copy()
+
+Explanation:
+Creates copy of original dataset.
+
+Why copy is needed:
+To avoid changing original dataset directly.
+
+
+
+df_normalized[numeric_columns] = scaler.fit_transform(
+    df_normalized[numeric_columns]
+)
+
+Explanation:
+This performs normalization on numerical columns.
+
+fit_transform():
+- fit() learns minimum and maximum values
+- transform() scales values between 0 and 1
+
+After normalization:
+All values become standardized.
+
+
+
+print("\nNormalized Dataset")
+print(df_normalized.head())
+
+Explanation:
+Displays normalized dataset.
+
+Now all numeric values are between 0 and 1.
+
+
+
+print("\nUnique Species Before Encoding")
+print(df['Species'].unique())
+
+Explanation:
+Displays unique flower categories.
+
+Example:
+- Iris-setosa
+- Iris-versicolor
+- Iris-virginica
+
+Machine learning models cannot directly understand text data.
+
+
+
+label_encoder = preprocessing.LabelEncoder()
+
+Explanation:
+Creates LabelEncoder object.
+
+LabelEncoder converts text labels into numerical values.
+
+
+
+df['Species'] = label_encoder.fit_transform(df['Species'])
+
+Explanation:
+Converts categorical Species column into numerical form.
+
+Example:
+- Iris-setosa → 0
+- Iris-versicolor → 1
+- Iris-virginica → 2
+
+This process is called Label Encoding.
+
+
+
+print("\nUnique Species After Encoding")
+print(df['Species'].unique())
+
+Explanation:
+Displays numerical encoded categories.
+
+Now machine learning models can use these values.
+
+
+
+print("\nDataset After Label Encoding")
+print(df.head())
+
+Explanation:
+Displays updated dataset after encoding.
+
+Species column now contains numbers instead of text.
+
+
+
+print("\nFirst 3 Rows")
+print(df[0:3])
+
+Explanation:
+Displays first 3 rows using slicing.
+
+Syntax:
+[start:end]
+
+0:3 means:
+- Start from row 0
+- Stop before row 3
+
+
+
+print("\nSelect Specific Columns")
+print(df.loc[:, ["Sepal_Length", "Petal_Length"]])
+
+Explanation:
+loc is label-based indexing.
+
+:
+Means all rows.
+
+["Sepal_Length", "Petal_Length"]
+Selects only specified columns.
+
+
+
+print("\nFirst 5 Rows using iloc")
+print(df.iloc[:5, :])
+
+Explanation:
+iloc is integer-based indexing.
+
+:5 → first 5 rows
+: → all columns
+
+
+
+print("\nFirst 3 Columns")
+print(df.iloc[:, :3])
+
+Explanation:
+Selects:
+- All rows
+- First 3 columns
+
+
+
+print("\nSubset of First 5 Rows and First 3 Columns")
+print(df.iloc[:5, :3])
+
+Explanation:
+Selects:
+- First 5 rows
+- First 3 columns
+
+Useful for:
+- Creating smaller subsets
+- Data analysis
+- Training sample datasets
+
+
+
+5. VIVA PART
+
+
+Data Wrangling (Viva Answer)
+
+Definition:
+Data wrangling is the process of cleaning, transforming, and organizing raw data into a useful format for analysis.
+
+Real-world data:
+- contains missing values
+- contains errors
+- contains inconsistent formats
+- may contain categorical data
+
+Steps Involved:
+- Handling missing values
+- Removing duplicates
+- Converting data formats
+- Filtering and sorting data
+- Merging datasets
+
+Machine learning models require:
+- clean data
+- numerical data
+- formatted data
+
+Therefore data wrangling is necessary.
+
+
+
+WHAT IS DATASET?
+
+Dataset means:
+Collection of related data records.
+
+Example:
+- Iris dataset
+- Student dataset
+- Sales dataset
+
+Each:
+- row → record
+- column → feature/attribute
+
+Definition:
+Big Data refers to extremely large and complex datasets that cannot be processed using traditional data processing tools.
+
+Example:
+- Social media data (Instagram, Facebook)
+- Online transactions
+- Sensor data
+
+
+
+DATA PREPROCESSING
+
+Definition:
+Data preprocessing is the process of cleaning and preparing raw data before using it for analysis or machine learning.
+
+Explanation:
+Raw data may contain errors, missing values, duplicates, or inconsistent formats. Data preprocessing makes the data clean, organized, and suitable for building models.
+
+Steps Involved:
+- Handling missing values
+- Removing duplicates
+- Data normalization/scaling
+- Encoding categorical data
+- Data transformation
+
+Example:
+Filling missing values in a dataset or converting text data into numerical form.
+
+
+
+DATA NORAMALIZATION AND MIN MAX
+
+Definition:
+Data normalization is the process of scaling data values to a standard range.
+
+Min-Max normalization is a type of normalization that scales values between 0 and 1.
+
+Explanation:
+Normalization ensures that all features have the same scale so that no feature dominates others.
+
+Min-Max normalization specifically uses the minimum and maximum values of the data to transform it into a fixed range (usually 0 to 1).
+
+Formula (Min-Max Normalization):
+
+X' = (X - Xmin) / (Xmax - Xmin)
+
+Example:
+If data = [10, 20, 30]
+→ Normalized (Min-Max) = [0, 0.5, 1]
+
+Viva Line:
+Normalization scales data to a common range, and Min-Max normalization is a method that converts values between 0 and 1.
+
+
+
+DATA SCIENCE
+
+Definition:
+Data Science is a field that involves extracting meaningful insights and knowledge from data using techniques like statistics, machine learning, and data analysis.
+
+Explanation:
+Helps to make decisions. It helps in finding patterns, trends, and useful information from large datasets.
+
+Example:
+Analyzing customer data to recommend products (like Amazon or Netflix recommendations).
+
+
+
+4. What is Pandas?
+
+Answer:
+Pandas is a Python library used for:
+- Data manipulation
+- Data analysis
+- Data cleaning
+- Handling tabular data
+
+It provides two important data structures:
+- Series → one-dimensional
+- DataFrame → two-dimensional table
+
+Pandas is widely used because it makes data handling simple and efficient.
+
+
+
+5. What is NumPy?
+
+Answer:
+NumPy is a Python library used for numerical computations.
+
+It provides:
+- Multi-dimensional arrays
+- Mathematical operations
+- Matrix operations
+- Statistical functions
+
+NumPy is faster than normal Python lists because it uses optimized array operations.
+
+
+
+DATA SCIENCE STEPS:
+
+Data Science steps are the stages followed to analyze data and get useful insights.
+
+Steps:
+
+1. Data Collection
+   → Gathering data from sources like databases, APIs, files
+
+2. Data Cleaning (Preprocessing)
+   → Removing errors, missing values, and making data usable
+
+3. Data Exploration (EDA)
+   → Understanding data using graphs and statistics
+
+4. Feature Engineering
+   → Selecting and creating important input features
+
+5. Model Building
+   → Applying machine learning algorithms
+
+MODEL TESTING
+
+6. Model Evaluation
+   → Checking model performance using metrics
+
+7. Deployment
+   → Using the model in real-world applications
+
+MONITORING
+
+Viva Line:
+Data Science includes collecting, cleaning, analyzing data, and building models step by step.
+
+
+
+SKIT LEARCN
+
+Scikit-learn is a Python library used for machine learning and data analysis.
+
+It provides tools for:
+- Classification
+- Regression
+- Clustering
+- Preprocessing
+- Model evaluation
+
+
+
+DATAFRAME
+
+Definition:
+DataFrame is a 2D data structure used to store data in rows and columns.
+
+Explanation:
+It is like a table (similar to Excel) where data is organized with labels for rows and columns.

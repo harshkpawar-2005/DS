@@ -1,0 +1,857 @@
+1. CODE
+
+# Download the CSV and upload it in home page of jupyter notebook
+
+import pandas as pd
+import numpy as np
+import matplotlib.pyplot as plt
+
+from sklearn.model_selection import train_test_split
+from sklearn.linear_model import LinearRegression
+from sklearn.metrics import mean_squared_error, r2_score
+
+data = pd.read_csv("Boston Housing Data.xls")
+
+print("\nBoston Housing Dataset")
+print(data)
+
+print("\nFirst 5 Rows")
+print(data.head())
+
+print("\nMissing Values")
+print(data.isnull().sum())
+
+data = data.fillna(data.mean())
+
+x = data.drop(['MEDV'], axis=1)
+
+y = data['MEDV']
+
+xtrain, xtest, ytrain, ytest = train_test_split(
+    x,
+    y,
+    test_size=0.2,
+    random_state=0
+)
+
+lm = LinearRegression()
+
+model = lm.fit(xtrain, ytrain)
+
+ytrain_pred = lm.predict(xtrain)
+
+ytest_pred = lm.predict(xtest)
+
+print("\nPredicted Values for Training Data")
+print(ytrain_pred)
+
+print("\nPredicted Values for Testing Data")
+print(ytest_pred)
+
+mse_train = mean_squared_error(ytrain, ytrain_pred)
+
+mse_test = mean_squared_error(ytest, ytest_pred)
+
+print("\nMean Squared Error for Training Data")
+print(mse_train)
+
+print("\nMean Squared Error for Testing Data")
+print(mse_test)
+
+r2 = r2_score(ytest, ytest_pred)
+
+print("\nR-Squared Value")
+print(r2)
+
+plt.scatter(
+    ytrain,
+    ytrain_pred,
+    c='blue',
+    marker='o',
+    label='Training Data'
+)
+
+plt.scatter(
+    ytest,
+    ytest_pred,
+    c='green',
+    marker='s',
+    label='Testing Data'
+)
+
+plt.xlabel("True Values")
+
+plt.ylabel("Predicted Values")
+
+plt.title("True Values vs Predicted Values")
+
+plt.legend(loc='upper left')
+
+plt.show()
+
+
+
+2. TITLE
+
+TITLE: LINEAR REGRESSION USING BOSTON HOUSING DATASET
+
+
+
+3. WHAT THE PRACTICAL DOES / AIM
+
+This practical demonstrates Linear Regression using the Boston Housing Dataset.
+
+The main aim of this practical is:
+- To load the Boston Housing dataset
+- To preprocess the dataset
+- To split data into training and testing sets
+- To train a Linear Regression model
+- To predict house prices
+- To evaluate model performance
+
+The practical uses:
+- Pandas for data handling
+- NumPy for numerical operations
+- Matplotlib for visualization
+- Scikit-learn for machine learning
+
+The dataset contains:
+- Housing information
+- Feature variables
+- House prices
+
+Target variable:
+- MEDV → Median value of owner-occupied homes
+
+Machine Learning operations performed:
+- Loading dataset
+- Handling missing values
+- Feature and target separation
+- Train-test splitting
+- Model training
+- Prediction
+- Error calculation
+- Accuracy evaluation
+- Data visualization
+
+Evaluation metrics used:
+- Mean Squared Error (MSE)
+- R-Squared Score (R²)
+
+
+
+4. DETAILED LINE-BY-LINE CODE EXPLANATION
+
+# Download the CSV and upload it in home page of jupyter notebook
+
+Explanation:
+This instruction tells the user to:
+- Download dataset file
+- Upload it into Jupyter Notebook working directory
+
+The file used is:
+Boston Housing Data.xls
+
+
+
+import pandas as pd
+
+Explanation:
+Imports Pandas library.
+
+Pandas is used for:
+- Reading CSV/Excel files
+- Creating DataFrames
+- Data analysis
+- Data preprocessing
+
+pd is alias for pandas.
+
+
+
+import numpy as np
+
+Explanation:
+Imports NumPy library.
+
+NumPy is used for:
+- Numerical operations
+- Mathematical calculations
+- Scientific computing
+
+np is alias for numpy.
+
+
+
+import matplotlib.pyplot as plt
+
+Explanation:
+Imports pyplot module from Matplotlib.
+
+Matplotlib is used for:
+- Plotting graphs
+- Data visualization
+- Scatter plots
+- Histograms
+- Charts
+
+plt is alias for pyplot.
+
+
+
+from sklearn.model_selection import train_test_split
+
+Explanation:
+Imports train_test_split() function.
+
+Used to:
+Split dataset into:
+- Training data
+- Testing data
+
+Training data:
+Used to train model.
+
+Testing data:
+Used to test model performance.
+
+
+
+from sklearn.linear_model import LinearRegression
+
+Explanation:
+Imports LinearRegression model.
+
+Linear Regression is a supervised machine learning algorithm used for:
+- Prediction
+- Regression tasks
+- Finding relationship between variables
+
+It predicts continuous numerical values.
+
+
+
+from sklearn.metrics import mean_squared_error, r2_score
+
+Explanation:
+Imports evaluation metrics.
+
+1. mean_squared_error
+→ Calculates prediction error.
+
+2. r2_score
+→ Measures model accuracy.
+
+
+
+data = pd.read_csv("Boston Housing Data.xls")
+
+Explanation:
+Reads dataset file.
+
+pd.read_csv():
+Used to load CSV dataset into DataFrame.
+
+The dataset is stored in variable data.
+
+
+
+print("\nBoston Housing Dataset")
+
+Explanation:
+Displays heading before dataset.
+
+\n adds new line.
+
+
+
+print(data)
+
+Explanation:
+Displays complete dataset.
+
+Useful for:
+- Viewing rows and columns
+- Understanding dataset structure
+
+
+
+print("\nFirst 5 Rows")
+
+Explanation:
+Displays heading for first 5 rows.
+
+
+
+print(data.head())
+
+Explanation:
+head():
+Displays first 5 rows of dataset.
+
+Useful for:
+- Quickly viewing data
+- Understanding structure
+
+
+
+print("\nMissing Values")
+
+Explanation:
+Displays heading for missing values section.
+
+
+
+print(data.isnull().sum())
+
+Explanation:
+isnull():
+Checks missing values.
+
+sum():
+Counts missing values in each column.
+
+Useful for:
+- Identifying incomplete data
+- Data cleaning
+
+
+
+data = data.fillna(data.mean())
+
+Explanation:
+Fills missing values using mean.
+
+fillna():
+Replaces missing values.
+
+data.mean():
+Calculates average of each numerical column.
+
+This prevents:
+- Data loss
+- Errors during training
+
+
+
+x = data.drop(['MEDV'], axis=1)
+
+Explanation:
+Creates feature dataset.
+
+drop():
+Removes target column.
+
+MEDV:
+Target variable (house price).
+
+axis=1:
+Indicates column removal.
+
+x contains input features.
+
+
+
+y = data['MEDV']
+
+Explanation:
+Stores target variable in y.
+
+Target variable:
+Value we want to predict.
+
+Here:
+MEDV = house price.
+
+
+
+xtrain, xtest, ytrain, ytest = train_test_split(
+    x,
+    y,
+    test_size=0.2,
+    random_state=0
+)
+
+Explanation:
+Splits dataset into training and testing sets.
+
+Parameters:
+
+x
+→ Input features
+
+y
+→ Target values
+
+test_size=0.2
+→ 20% data used for testing
+→ 80% used for training
+
+random_state=0
+→ Ensures same random split every time.
+
+Output:
+- xtrain → training input
+- xtest → testing input
+- ytrain → training output
+- ytest → testing output
+
+
+
+lm = LinearRegression()
+
+Explanation:
+Creates Linear Regression model object.
+
+lm stores machine learning model.
+
+
+
+model = lm.fit(xtrain, ytrain)
+
+Explanation:
+Trains model using training data.
+
+fit():
+Learns relationship between:
+- input features
+- output values
+
+The model learns patterns from training data.
+
+
+
+ytrain_pred = lm.predict(xtrain)
+
+Explanation:
+Predicts house prices for training data.
+
+predict():
+Uses trained model for prediction.
+
+Predicted values stored in ytrain_pred.
+
+
+
+ytest_pred = lm.predict(xtest)
+
+Explanation:
+Predicts house prices for testing data.
+
+Used for:
+- Model evaluation
+- Performance checking
+
+
+
+print("\nPredicted Values for Training Data")
+
+Explanation:
+Displays heading for training predictions.
+
+
+
+print(ytrain_pred)
+
+Explanation:
+Displays predicted house prices for training dataset.
+
+
+
+print("\nPredicted Values for Testing Data")
+
+Explanation:
+Displays heading for testing predictions.
+
+
+
+print(ytest_pred)
+
+Explanation:
+Displays predicted house prices for testing dataset.
+
+
+
+mse_train = mean_squared_error(ytrain, ytrain_pred)
+
+Explanation:
+Calculates Mean Squared Error for training data.
+
+MSE formula:
+Average of squared prediction errors.
+
+Lower MSE:
+Better model performance.
+
+
+
+mse_test = mean_squared_error(ytest, ytest_pred)
+
+Explanation:
+Calculates Mean Squared Error for testing data.
+
+Used to evaluate model accuracy on unseen data.
+
+
+
+print("\nMean Squared Error for Training Data")
+
+Explanation:
+Displays heading for training MSE.
+
+
+
+print(mse_train)
+
+Explanation:
+Displays training error value.
+
+
+
+print("\nMean Squared Error for Testing Data")
+
+Explanation:
+Displays heading for testing MSE.
+
+
+
+print(mse_test)
+
+Explanation:
+Displays testing error value.
+
+
+
+r2 = r2_score(ytest, ytest_pred)
+
+Explanation:
+Calculates R-Squared value.
+
+R² score measures:
+How well model explains data.
+
+Range:
+0 to 1
+
+- Closer to 1 → better model
+- Closer to 0 → poor model
+
+
+
+print("\nR-Squared Value")
+
+Explanation:
+Displays heading for R² score.
+
+
+
+print(r2)
+
+Explanation:
+Displays R-Squared accuracy value.
+
+
+
+plt.scatter(
+    ytrain,
+    ytrain_pred,
+    c='blue',
+    marker='o',
+    label='Training Data'
+)
+
+Explanation:
+Creates scatter plot for training data.
+
+Parameters:
+
+ytrain
+→ Actual values
+
+ytrain_pred
+→ Predicted values
+
+c='blue'
+→ Blue color
+
+marker='o'
+→ Circle marker
+
+label
+→ Legend name
+
+
+
+plt.scatter(
+    ytest,
+    ytest_pred,
+    c='green',
+    marker='s',
+    label='Testing Data'
+)
+
+Explanation:
+Creates scatter plot for testing data.
+
+Green squares represent testing predictions.
+
+
+
+plt.xlabel("True Values")
+
+Explanation:
+Labels X-axis.
+
+X-axis contains actual values.
+
+
+
+plt.ylabel("Predicted Values")
+
+Explanation:
+Labels Y-axis.
+
+Y-axis contains predicted values.
+
+
+
+plt.title("True Values vs Predicted Values")
+
+Explanation:
+Adds title to graph.
+
+
+
+plt.legend(loc='upper left')
+
+Explanation:
+Displays legend on graph.
+
+Legend helps identify:
+- Training data
+- Testing data
+
+
+
+plt.show()
+
+Explanation:
+Displays scatter plot graph.
+
+Used to visualize:
+- Model performance
+- Prediction quality
+- Relationship between actual and predicted values
+
+5. VIVA PART
+
+1. What is Probability?
+
+Answer:
+Probability tells us how likely an event is to happen.
+
+Its value lies between 0 and 1:
+- 0 → impossible event
+- 1 → certain event
+
+Example:
+Probability of getting head in coin toss = 1/2
+
+It helps in making predictions under uncertainty.
+
+
+
+2. What is a Random Variable?
+
+Answer:
+A random variable is a variable whose value depends on the outcome of a random experiment.
+
+Types:
+- Discrete → countable (e.g., number of students)
+- Continuous → measurable (e.g., height, weight)
+
+It converts real-world outcomes into numerical form for analysis.
+
+
+
+3. What is a Probability Distribution?
+
+Answer:
+A probability distribution shows all possible values of a random variable and their probabilities.
+
+It helps us understand:
+- Which outcomes are likely
+- How data is spread
+
+Example:
+Distribution of marks of students.
+
+
+
+4. What is Normal Distribution?
+
+Answer:
+Normal distribution is a bell-shaped, symmetrical curve.
+
+Key properties:
+- Mean = Median = Mode
+- Data is evenly distributed around mean
+- Most values lie near the center
+
+It is widely used because many real-world data follow this pattern.
+
+
+
+5. What is Standard Deviation?
+
+Answer:
+Standard deviation measures how much data values deviate from the mean.
+
+- Low SD → values close to mean
+- High SD → values widely spread
+
+It helps in understanding variability of data.
+
+
+
+6. Explain the 68–95–99 Rule
+
+Answer:
+In normal distribution:
+- 68% data lies within 1 standard deviation
+- 95% within 2 standard deviations
+- 99.7% within 3 standard deviations
+
+This rule helps estimate data spread quickly.
+
+
+
+7. What is Hypothesis Testing?
+
+Answer:
+Hypothesis testing is a statistical method used to make decisions using data.
+
+We test an assumption and decide whether it is true or false.
+
+It is widely used in research and machine learning.
+
+
+
+8. What is Null Hypothesis (H₀)?
+
+Answer:
+Null hypothesis means no effect or no difference.
+
+Example:
+“There is no difference between two teaching methods”
+
+It is the assumption we try to test.
+
+
+
+9. What is Alternative Hypothesis (H₁)?
+
+Answer:
+Alternative hypothesis means there is an effect or difference.
+
+Example:
+“There is a difference between two methods”
+
+It is accepted when null hypothesis is rejected.
+
+
+
+10. What is p-value?
+
+Answer:
+p-value tells us how strong the evidence is against the null hypothesis.
+
+- p < 0.05 → reject H₀
+- p > 0.05 → do not reject H₀
+
+Smaller p-value = stronger evidence.
+
+
+
+11. What is Significance Level (α)?
+
+Answer:
+Significance level is a threshold used to decide whether to reject H₀.
+
+Common value:
+0.05 (5%)
+
+It defines the risk of making an incorrect decision.
+
+
+
+12. What is Z-test?
+
+Answer:
+Z-test is used when:
+- Sample size is large
+- Population standard deviation is known
+
+It checks whether sample mean differs from population mean.
+
+
+
+13. What is T-test?
+
+Answer:
+T-test is used when:
+- Sample size is small
+- Standard deviation is unknown
+
+It is more practical for real-world data.
+
+
+
+14. Difference between Z-test and T-test
+
+Z-test
+- Large sample size
+- SD known
+- Uses normal distribution
+
+T-test
+- Small sample size
+- SD unknown
+- Uses t-distribution
+
+
+
+15. What is Type I Error?
+
+Answer:
+Type I error occurs when we reject a true null hypothesis.
+
+Also called false positive.
+
+Example:
+Saying a medicine works when it actually doesn’t.
+
+
+
+16. What is Type II Error?
+
+Answer:
+Type II error occurs when we accept a false null hypothesis.
+
+Also called false negative.
+
+Example:
+Saying a medicine doesn’t work when it actually does.
+
+
+
+17. Why is Hypothesis Testing important?
+
+Answer:
+It helps to:
+- Make scientific decisions
+- Validate assumptions
+- Compare results
+- Reduce guesswork
+
+It provides a logical way to analyze data.
