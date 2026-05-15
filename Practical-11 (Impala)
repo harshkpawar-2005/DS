@@ -1,0 +1,536 @@
+# ==========================================================
+# PRACTICAL : IMPALA DATABASE OPERATIONS
+# ==========================================================
+
+# Import SQLite Library
+import sqlite3
+
+# Create Database
+conn = sqlite3.connect("student.db")
+
+# Create Cursor
+cursor = conn.cursor()
+
+# Create Table
+cursor.execute("""
+
+CREATE TABLE IF NOT EXISTS students (
+
+    id INTEGER PRIMARY KEY,
+
+    name TEXT,
+
+    age INTEGER,
+
+    marks INTEGER
+
+)
+
+""")
+
+print("Table Created Successfully")
+
+# Insert Data
+cursor.execute(
+    "INSERT INTO students VALUES (1, 'Abhinav', 20, 85)"
+)
+
+cursor.execute(
+    "INSERT INTO students VALUES (2, 'Rahul', 21, 78)"
+)
+
+cursor.execute(
+    "INSERT INTO students VALUES (3, 'Sneha', 19, 92)"
+)
+
+# Save Changes
+conn.commit()
+
+print("Data Inserted Successfully")
+
+# Display All Records
+cursor.execute("SELECT * FROM students")
+
+rows = cursor.fetchall()
+
+print("\nStudent Records:\n")
+
+for row in rows:
+
+    print(row)
+
+# Query: Marks Greater Than 80
+cursor.execute(
+    "SELECT * FROM students WHERE marks > 80"
+)
+
+print("\nStudents with Marks > 80:\n")
+
+print(cursor.fetchall())
+
+# Average Marks
+cursor.execute(
+    "SELECT AVG(marks) FROM students"
+)
+
+print("\nAverage Marks:\n")
+
+print(cursor.fetchone())
+
+# Update Record
+cursor.execute(
+    "UPDATE students SET marks = 88 WHERE id = 2"
+)
+
+conn.commit()
+
+print("\nRecord Updated Successfully")
+
+# Delete Record
+cursor.execute(
+    "DELETE FROM students WHERE id = 1"
+)
+
+conn.commit()
+
+print("\nRecord Deleted Successfully")
+
+# Final Records
+cursor.execute("SELECT * FROM students")
+
+print("\nFinal Table Data:\n")
+
+for row in cursor.fetchall():
+
+    print(row)
+
+# Close Connection
+conn.close()
+
+print("\nDatabase Connection Closed")
+
+
+# ==========================================================
+# EXTRA QUERIES
+# ==========================================================
+
+# Reconnect Database
+conn = sqlite3.connect("student.db")
+
+cursor = conn.cursor()
+
+# Maximum Marks
+cursor.execute(
+    "SELECT MAX(marks) FROM students"
+)
+
+print("\nMaximum Marks:")
+
+print(cursor.fetchone())
+
+# Minimum Marks
+cursor.execute(
+    "SELECT MIN(marks) FROM students"
+)
+
+print("\nMinimum Marks:")
+
+print(cursor.fetchone())
+
+# Count Students
+cursor.execute(
+    "SELECT COUNT(*) FROM students"
+)
+
+print("\nTotal Students:")
+
+print(cursor.fetchone())
+
+# Sort by Marks
+cursor.execute(
+    "SELECT * FROM students ORDER BY marks DESC"
+)
+
+print("\nStudents Sorted by Marks:\n")
+
+for row in cursor.fetchall():
+
+    print(row)
+
+# Students Age Greater Than 20
+cursor.execute(
+    "SELECT * FROM students WHERE age > 20"
+)
+
+print("\nStudents with Age > 20:\n")
+
+print(cursor.fetchall())
+
+# Close Connection
+conn.close()
+
+
+# ==========================================================
+# TITLE OF THE ASSIGNMENT
+# ==========================================================
+
+# PROBLEM STATEMENT:
+# Create databases and tables, insert small amounts of data,
+# and run simple queries using Impala
+
+
+# ==========================================================
+# WHAT IS THIS PRACTICAL?
+# ==========================================================
+
+# In this practical, we learned how to perform basic database
+# operations using Python and SQLite.
+
+# This practical demonstrates how database systems work using
+# SQL commands such as CREATE, INSERT, SELECT, UPDATE, and DELETE.
+
+# We created a student database and stored student records
+# containing id, name, age, and marks.
+
+# Then we performed different SQL operations such as:
+# 1. Creating tables
+# 2. Inserting records
+# 3. Retrieving records
+# 4. Updating records
+# 5. Deleting records
+# 6. Finding maximum, minimum, and average marks
+# 7. Sorting records
+# 8. Applying conditions using WHERE clause
+
+# Although the practical title mentions Impala, SQLite is used
+# here to simulate database operations because SQLite supports
+# SQL commands and is simple to execute using Python.
+
+
+# ==========================================================
+# EXPLANATION OF CODE LINE BY LINE
+# ==========================================================
+
+# import sqlite3
+# This line imports the sqlite3 library.
+# SQLite is a lightweight relational database system.
+# The sqlite3 module allows Python programs to create
+# and manage databases using SQL queries.
+
+# conn = sqlite3.connect("student.db")
+# This line creates a connection with the database file
+# named "student.db".
+# If the database file does not exist, Python automatically
+# creates it.
+# The connection object is stored in variable conn.
+
+# cursor = conn.cursor()
+# A cursor object is created using the connection object.
+# Cursor is used to execute SQL commands like:
+# CREATE TABLE
+# INSERT
+# SELECT
+# UPDATE
+# DELETE
+# The cursor acts like a command executor for the database.
+
+# cursor.execute("""
+# CREATE TABLE IF NOT EXISTS students (
+#     id INTEGER PRIMARY KEY,
+#     name TEXT,
+#     age INTEGER,
+#     marks INTEGER
+# )
+# """)
+# This SQL query creates a table named students.
+# IF NOT EXISTS prevents errors if the table already exists.
+
+# id INTEGER PRIMARY KEY
+# Creates an integer column named id.
+# PRIMARY KEY means each id must be unique.
+
+# name TEXT
+# Creates a text column to store student names.
+
+# age INTEGER
+# Creates an integer column to store age.
+
+# marks INTEGER
+# Creates an integer column to store marks.
+
+# print("Table Created Successfully")
+# Displays message after successful table creation.
+
+# cursor.execute(
+#     "INSERT INTO students VALUES (1, 'Abhinav', 20, 85)"
+# )
+# Inserts first student record into students table.
+
+# cursor.execute(
+#     "INSERT INTO students VALUES (2, 'Rahul', 21, 78)"
+# )
+# Inserts second student record into table.
+
+# cursor.execute(
+#     "INSERT INTO students VALUES (3, 'Sneha', 19, 92)"
+# )
+# Inserts third student record into table.
+
+# conn.commit()
+# Saves all inserted records permanently in the database.
+# Without commit(), changes may not be stored.
+
+# print("Data Inserted Successfully")
+# Displays successful insertion message.
+
+# cursor.execute("SELECT * FROM students")
+# SELECT * retrieves all columns and all rows from students table.
+
+# rows = cursor.fetchall()
+# fetchall() retrieves all rows returned by SELECT query.
+# Data is stored in variable rows as a list.
+
+# print("\nStudent Records:\n")
+# Displays heading for records.
+
+# for row in rows:
+#     print(row)
+# for loop prints each student record one by one.
+
+# cursor.execute(
+#     "SELECT * FROM students WHERE marks > 80"
+# )
+# Retrieves records of students whose marks are greater than 80.
+# WHERE clause applies condition filtering.
+
+# print(cursor.fetchall())
+# Displays filtered student records.
+
+# cursor.execute(
+#     "SELECT AVG(marks) FROM students"
+# )
+# AVG() is an aggregate SQL function.
+# It calculates average marks of all students.
+
+# print(cursor.fetchone())
+# fetchone() retrieves only one result from query.
+
+# cursor.execute(
+#     "UPDATE students SET marks = 88 WHERE id = 2"
+# )
+# UPDATE query modifies existing records.
+# Here marks of student with id = 2 are updated to 88.
+
+# conn.commit()
+# Saves updated values permanently.
+
+# print("\nRecord Updated Successfully")
+# Displays update success message.
+
+# cursor.execute(
+#     "DELETE FROM students WHERE id = 1"
+# )
+# DELETE query removes records from table.
+# Here record with id = 1 is deleted.
+
+# conn.commit()
+# Saves deletion changes permanently.
+
+# print("\nRecord Deleted Successfully")
+# Displays deletion success message.
+
+# cursor.execute("SELECT * FROM students")
+# Retrieves final table data after update and delete operations.
+
+# for row in cursor.fetchall():
+#     print(row)
+# Prints all remaining records from table.
+
+# conn.close()
+# Closes database connection safely.
+# Closing connection releases system resources.
+
+# conn = sqlite3.connect("student.db")
+# Reconnects database for additional SQL queries.
+
+# cursor = conn.cursor()
+# Creates new cursor object for executing queries.
+
+# cursor.execute(
+#     "SELECT MAX(marks) FROM students"
+# )
+# MAX() function returns highest marks value.
+
+# print(cursor.fetchone())
+# Displays maximum marks.
+
+# cursor.execute(
+#     "SELECT MIN(marks) FROM students"
+# )
+# MIN() function returns minimum marks value.
+
+# print(cursor.fetchone())
+# Displays minimum marks.
+
+# cursor.execute(
+#     "SELECT COUNT(*) FROM students"
+# )
+# COUNT(*) counts total number of rows in students table.
+
+# print(cursor.fetchone())
+# Displays total student count.
+
+# cursor.execute(
+#     "SELECT * FROM students ORDER BY marks DESC"
+# )
+# ORDER BY sorts records according to marks.
+# DESC means descending order (highest to lowest).
+
+# for row in cursor.fetchall():
+#     print(row)
+# Displays sorted records.
+
+# cursor.execute(
+#     "SELECT * FROM students WHERE age > 20"
+# )
+# Retrieves students whose age is greater than 20.
+
+# print(cursor.fetchall())
+# Displays filtered records.
+
+# conn.close()
+# Finally closes database connection safely.
+
+
+# ==========================================================
+# VIVA QUESTIONS
+# ==========================================================
+
+# 1. What is Impala?
+# Answer:
+# Impala is an open-source SQL query engine used to process data stored in Hadoop.
+# It provides fast, real-time query execution on large datasets.
+
+# 2. What is the objective of this practical?
+# Answer:
+
+# To create databases and tables in Impala
+
+# To insert data
+
+# To execute SQL queries for data analysis
+
+# 3. What is Hadoop?
+# Answer:
+# Hadoop is a framework used to store and process large datasets in a distributed environment.
+
+# 4. What type of system is Impala?
+# Answer:
+# Impala is a distributed and scalable system that runs queries in parallel across multiple nodes.
+
+# 5. What is a database in Impala?
+# Answer:
+# A database is a collection of tables used to organize data.
+
+# Example:
+
+# CREATE DATABASE my_database;
+
+# 6. How do you create a table in Impala?
+# Answer:
+
+# CREATE TABLE my_table (
+#  id INT,
+#  name STRING,
+#  age INT
+# );
+
+# 7. What is a table?
+# Answer:
+# A table is a structured format of data stored in rows and columns.
+
+# 8. How do you insert data into a table?
+# Answer:
+
+# INSERT INTO my_table VALUES (1, 'John', 25);
+
+# 9. What is a query?
+# Answer:
+# A query is a SQL command used to retrieve or manipulate data.
+
+# 10. How do you display all records from a table?
+# Answer:
+
+# SELECT * FROM my_table;
+
+# 11. What is SQL?
+# Answer:
+# SQL (Structured Query Language) is used to manage and query databases.
+
+# 12. What is distributed architecture?
+# Answer:
+# Data is stored across multiple machines (nodes), and processing is done in parallel.
+
+# 13. What is metadata in Impala?
+# Answer:
+# Metadata stores information about:
+
+# Tables
+
+# Schema
+
+# Data location
+
+# 14. What are supported file formats in Impala?
+# Answer:
+
+# Parquet
+
+# Avro
+
+# RCFile
+
+# 15. What is the advantage of Impala?
+# Answer:
+
+# Fast query processing
+
+# Real-time analysis
+
+# Scalable
+
+# Handles big data efficiently
+
+# 16. What is a primary key?
+# Answer:
+# A primary key uniquely identifies each row in a table.
+
+# 17. What is data preprocessing?
+# Answer:
+# Preparing data before analysis by cleaning and organizing it.
+
+# 18. What is data normalization?
+# Answer:
+# Organizing data to reduce redundancy and improve consistency.
+
+# 19. What are simple queries?
+# Answer:
+# Basic SQL queries like:
+
+# SELECT
+
+# INSERT
+
+# CREATE
+
+# 20. What is the conclusion of this practical?
+# Answer:
+# We learned how to:
+
+# Create databases and tables
+
+# Insert data
+
+# Run queries using Impala
+
+# Impala helps in fast and efficient big data analysis.
