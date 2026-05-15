@@ -868,23 +868,430 @@ Data Science includes collecting, cleaning, analyzing data, and building models 
 
 
 
-SKIT LEARCN
+1. What is Data Wrangling?
+Answer:
+Data wrangling is the process of cleaning, organizing, and transforming raw data into a proper format so that it can be used for analysis or machine learning.
 
-Scikit-learn is a Python library used for machine learning and data analysis.
+In real-world datasets, data may contain:
 
-It provides tools for:
-- Classification
-- Regression
-- Clustering
-- Preprocessing
-- Model evaluation
+Missing values
 
+Duplicate records
 
+Wrong data types
 
-DATAFRAME
+Noise or inconsistent values
 
-Definition:
-DataFrame is a 2D data structure used to store data in rows and columns.
+So before applying machine learning algorithms, we preprocess the data using data wrangling techniques.
 
-Explanation:
-It is like a table (similar to Excel) where data is organized with labels for rows and columns.
+Example:
+If age values are stored as text instead of integers, we convert them into numeric format.
+
+2. Why is Data Preprocessing important?
+Answer:
+Data preprocessing is important because machine learning models work properly only when clean and structured data is provided.
+
+Raw data may contain:
+
+Missing values
+
+Incorrect formats
+
+Outliers
+
+Duplicate data
+
+Preprocessing improves:
+
+Accuracy of model
+
+Training efficiency
+
+Data quality
+
+Reliability of results
+
+Without preprocessing, the model may give wrong predictions.
+
+3. What is a Dataset?
+Answer:
+A dataset is a collection of related data arranged in rows and columns.
+
+Rows represent records or observations
+
+Columns represent features or attributes
+
+Example:
+In Iris dataset:
+
+Each row represents one flower
+
+Columns represent petal length, sepal width, species, etc.
+
+4. What is Pandas?
+Answer:
+Pandas is a Python library used for:
+
+Data manipulation
+
+Data analysis
+
+Data cleaning
+
+Handling tabular data
+
+It provides two important data structures:
+
+Series → one-dimensional
+
+DataFrame → two-dimensional table
+
+Pandas is widely used because it makes data handling simple and efficient.
+
+5. What is NumPy?
+Answer:
+NumPy is a Python library used for numerical computations.
+
+It provides:
+
+Multi-dimensional arrays
+
+Mathematical operations
+
+Matrix operations
+
+Statistical functions
+
+NumPy is faster than normal Python lists because it uses optimized array operations.
+
+6. What is Scikit-Learn?
+Answer:
+Scikit-learn is a machine learning library in Python.
+
+It provides:
+
+Classification algorithms
+
+Regression algorithms
+
+Clustering methods
+
+Preprocessing tools
+
+Model evaluation tools
+
+In this experiment, Scikit-learn is used for:
+
+Label Encoding
+
+Data Normalization
+
+7. What is a DataFrame?
+Answer:
+A DataFrame is a two-dimensional data structure in Pandas.
+
+It looks like an Excel table with:
+
+Rows
+
+Columns
+
+Labels
+
+It allows:
+
+Filtering
+
+Sorting
+
+Data analysis
+
+Statistical operations
+
+Example:
+
+df = pd.read_csv("iris.csv")
+Here df is a DataFrame.
+
+8. What is the Iris Dataset?
+Answer:
+The Iris dataset is a famous dataset used for machine learning and statistics.
+
+It contains:
+
+150 flower samples
+
+3 species:
+
+Iris-setosa
+
+Iris-versicolor
+
+Iris-virginica
+
+Features:
+
+Sepal length
+
+Sepal width
+
+Petal length
+
+Petal width
+
+It is mainly used for classification problems.
+
+9. What is read_csv()?
+Answer:
+read_csv() is a Pandas function used to load CSV files into a DataFrame.
+
+Example:
+
+df = pd.read_csv("iris.csv")
+It reads the dataset and stores it in tabular form.
+
+10. What is the use of head() function?
+Answer:
+head() displays the first few rows of the dataset.
+
+By default:
+
+df.head()
+shows first 5 rows.
+
+Purpose:
+
+Quickly inspect data
+
+Verify columns and values
+
+11. What is the use of tail() function?
+Answer:
+tail() displays the last few rows of the dataset.
+
+Example:
+
+df.tail()
+It helps verify ending records in the dataset.
+
+12. What is shape in Pandas?
+Answer:
+shape returns the dimensions of the dataset.
+
+Example:
+
+df.shape
+Output:
+
+(150, 5)
+
+Meaning:
+
+150 rows
+
+5 columns
+
+13. What is dtypes?
+Answer:
+dtypes is used to check the datatype of each column.
+
+Example:
+
+df.dtypes
+It tells whether data is:
+
+Integer
+
+Float
+
+Object/String
+
+This helps identify incorrect formats.
+
+14. What are Missing Values?
+Answer:
+Missing values are data values that are absent or not available in the dataset.
+
+In Pandas, missing values are represented as:
+
+NaN
+
+None
+
+Missing values can reduce model accuracy if not handled properly.
+
+15. How do you detect missing values?
+Answer:
+We detect missing values using:
+
+df.isnull()
+To count missing values:
+
+df.isnull().sum()
+It returns the number of null values in each column.
+
+16. What is Data Normalization?
+Answer:
+Data normalization is the process of scaling numeric values into a fixed range, usually between 0 and 1.
+
+Purpose:
+
+Makes all features comparable
+
+Improves machine learning performance
+
+Prevents large values from dominating
+
+Example:
+Marks out of 100 and salary in lakhs can be normalized into same range.
+
+17. What is Min-Max Scaling?
+Answer:
+Min-Max scaling is a normalization technique.
+
+Formula:
+
+Xnew = (X - Xmin) / (Xmax - Xmin)
+
+It converts values into range:
+
+0 to 1
+
+Used when features have different scales.
+
+18. What is Label Encoding?
+Answer:
+Label Encoding converts categorical text data into numeric form.
+
+Example:
+
+Species        Encoded
+Setosa         0
+Versicolor     1
+Virginica      2
+
+Machine learning algorithms cannot understand text directly, so encoding is necessary.
+
+19. What is the limitation of Label Encoding?
+Answer:
+Label Encoding may create a false order or priority between categories.
+
+Example:
+If:
+
+Red = 0
+
+Blue = 1
+
+Green = 2
+
+The model may assume Green > Blue > Red, which may not be true.
+
+So for nominal data, One-Hot Encoding is often preferred.
+
+20. Difference between Normalization and Standardization?
+Answer:
+
+Normalization                         Standardization
+Scales data between 0 and 1          Converts data around mean 0
+Uses Min-Max scaling                 Uses mean and standard deviation
+Sensitive to outliers                Better for normally distributed data
+
+21. Why do we convert categorical variables into numerical variables?
+Answer:
+Machine learning algorithms work only with numerical data.
+
+Categorical values like:
+
+Male/Female
+
+Yes/No
+
+Species names
+
+must be converted into numbers before training the model.
+
+22. What is the use of describe() function?
+Answer:
+describe() gives statistical summary of numerical columns.
+
+It shows:
+
+Count
+
+Mean
+
+Standard deviation
+
+Minimum
+
+Maximum
+
+Percentiles
+
+Example:
+
+df.describe()
+
+Used for quick statistical understanding of data.
+
+23. Explain iloc and loc.
+Answer:
+
+iloc
+Used for index-based selection
+
+Uses row and column numbers
+
+Example:
+
+df.iloc[0:5]
+
+loc
+Used for label-based selection
+
+Uses column names
+
+Example:
+
+df.loc[:, ["Age", "Salary"]]
+
+24. Why is data cleaning important in Data Science?
+Answer:
+Data cleaning improves the quality of the dataset.
+
+It helps:
+
+Remove errors
+
+Handle missing values
+
+Remove duplicates
+
+Improve consistency
+
+Clean data gives better analysis and more accurate machine learning models.
+
+25. Explain the complete workflow of this experiment.
+Answer:
+The workflow of this experiment is:
+
+Import required libraries
+
+Load dataset into DataFrame
+
+Check dataset structure
+
+Detect missing values
+
+Check datatypes
+
+Convert incorrect datatypes
+
+Normalize numerical values
+
+Encode categorical values
+
+Analyze cleaned dataset
+
+This process prepares the dataset for machine learning.
