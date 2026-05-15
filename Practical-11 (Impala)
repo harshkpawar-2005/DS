@@ -1,174 +1,3 @@
-# ==========================================================
-# PRACTICAL : IMPALA DATABASE OPERATIONS
-# ==========================================================
-
-# Import SQLite Library
-import sqlite3
-
-# Create Database
-conn = sqlite3.connect("student.db")
-
-# Create Cursor
-cursor = conn.cursor()
-
-# Create Table
-cursor.execute("""
-
-CREATE TABLE IF NOT EXISTS students (
-
-    id INTEGER PRIMARY KEY,
-
-    name TEXT,
-
-    age INTEGER,
-
-    marks INTEGER
-
-)
-
-""")
-
-print("Table Created Successfully")
-
-# Insert Data
-cursor.execute(
-    "INSERT INTO students VALUES (1, 'Abhinav', 20, 85)"
-)
-
-cursor.execute(
-    "INSERT INTO students VALUES (2, 'Rahul', 21, 78)"
-)
-
-cursor.execute(
-    "INSERT INTO students VALUES (3, 'Sneha', 19, 92)"
-)
-
-# Save Changes
-conn.commit()
-
-print("Data Inserted Successfully")
-
-# Display All Records
-cursor.execute("SELECT * FROM students")
-
-rows = cursor.fetchall()
-
-print("\nStudent Records:\n")
-
-for row in rows:
-
-    print(row)
-
-# Query: Marks Greater Than 80
-cursor.execute(
-    "SELECT * FROM students WHERE marks > 80"
-)
-
-print("\nStudents with Marks > 80:\n")
-
-print(cursor.fetchall())
-
-# Average Marks
-cursor.execute(
-    "SELECT AVG(marks) FROM students"
-)
-
-print("\nAverage Marks:\n")
-
-print(cursor.fetchone())
-
-# Update Record
-cursor.execute(
-    "UPDATE students SET marks = 88 WHERE id = 2"
-)
-
-conn.commit()
-
-print("\nRecord Updated Successfully")
-
-# Delete Record
-cursor.execute(
-    "DELETE FROM students WHERE id = 1"
-)
-
-conn.commit()
-
-print("\nRecord Deleted Successfully")
-
-# Final Records
-cursor.execute("SELECT * FROM students")
-
-print("\nFinal Table Data:\n")
-
-for row in cursor.fetchall():
-
-    print(row)
-
-# Close Connection
-conn.close()
-
-print("\nDatabase Connection Closed")
-
-
-# ==========================================================
-# EXTRA QUERIES
-# ==========================================================
-
-# Reconnect Database
-conn = sqlite3.connect("student.db")
-
-cursor = conn.cursor()
-
-# Maximum Marks
-cursor.execute(
-    "SELECT MAX(marks) FROM students"
-)
-
-print("\nMaximum Marks:")
-
-print(cursor.fetchone())
-
-# Minimum Marks
-cursor.execute(
-    "SELECT MIN(marks) FROM students"
-)
-
-print("\nMinimum Marks:")
-
-print(cursor.fetchone())
-
-# Count Students
-cursor.execute(
-    "SELECT COUNT(*) FROM students"
-)
-
-print("\nTotal Students:")
-
-print(cursor.fetchone())
-
-# Sort by Marks
-cursor.execute(
-    "SELECT * FROM students ORDER BY marks DESC"
-)
-
-print("\nStudents Sorted by Marks:\n")
-
-for row in cursor.fetchall():
-
-    print(row)
-
-# Students Age Greater Than 20
-cursor.execute(
-    "SELECT * FROM students WHERE age > 20"
-)
-
-print("\nStudents with Age > 20:\n")
-
-print(cursor.fetchall())
-
-# Close Connection
-conn.close()
-
 
 # ==========================================================
 # TITLE OF THE ASSIGNMENT
@@ -208,199 +37,378 @@ conn.close()
 
 
 # ==========================================================
-# EXPLANATION OF CODE LINE BY LINE
+# PRACTICAL : DATABASE OPERATIONS USING SQLITE
 # ==========================================================
 
-# import sqlite3
-# This line imports the sqlite3 library.
-# SQLite is a lightweight relational database system.
-# The sqlite3 module allows Python programs to create
-# and manage databases using SQL queries.
+# Import SQLite Library
+import sqlite3
 
-# conn = sqlite3.connect("student.db")
-# This line creates a connection with the database file
-# named "student.db".
-# If the database file does not exist, Python automatically
-# creates it.
-# The connection object is stored in variable conn.
+# ----------------------------------------------------------
+# CONNECT DATABASE
+# ----------------------------------------------------------
 
-# cursor = conn.cursor()
-# A cursor object is created using the connection object.
-# Cursor is used to execute SQL commands like:
+# Creates or connects to database file
+conn = sqlite3.connect("student.db")
+
+# Cursor object is used to execute SQL queries
+cursor = conn.cursor()
+
+# ----------------------------------------------------------
+# DROP OLD TABLE (TO AVOID DUPLICATE PRIMARY KEY ERROR)
+# ----------------------------------------------------------
+
+cursor.execute("DROP TABLE IF EXISTS students")
+
+# ----------------------------------------------------------
 # CREATE TABLE
-# INSERT
-# SELECT
-# UPDATE
-# DELETE
-# The cursor acts like a command executor for the database.
+# ----------------------------------------------------------
 
-# cursor.execute("""
-# CREATE TABLE IF NOT EXISTS students (
-#     id INTEGER PRIMARY KEY,
-#     name TEXT,
-#     age INTEGER,
-#     marks INTEGER
-# )
-# """)
-# This SQL query creates a table named students.
-# IF NOT EXISTS prevents errors if the table already exists.
+cursor.execute("""
 
-# id INTEGER PRIMARY KEY
-# Creates an integer column named id.
-# PRIMARY KEY means each id must be unique.
+CREATE TABLE students (
 
-# name TEXT
-# Creates a text column to store student names.
+    id INTEGER PRIMARY KEY,
+    name TEXT,
+    age INTEGER,
+    marks INTEGER
 
-# age INTEGER
-# Creates an integer column to store age.
+)
 
-# marks INTEGER
-# Creates an integer column to store marks.
+""")
 
-# print("Table Created Successfully")
-# Displays message after successful table creation.
+print("Table Created Successfully")
 
-# cursor.execute(
-#     "INSERT INTO students VALUES (1, 'Abhinav', 20, 85)"
-# )
-# Inserts first student record into students table.
+# ----------------------------------------------------------
+# INSERT DATA
+# ----------------------------------------------------------
 
-# cursor.execute(
-#     "INSERT INTO students VALUES (2, 'Rahul', 21, 78)"
-# )
-# Inserts second student record into table.
+students_data = [
 
-# cursor.execute(
-#     "INSERT INTO students VALUES (3, 'Sneha', 19, 92)"
-# )
-# Inserts third student record into table.
+    (1, 'Abhinav', 20, 85),
+    (2, 'Rahul', 21, 78),
+    (3, 'Sneha', 19, 92)
 
-# conn.commit()
-# Saves all inserted records permanently in the database.
-# Without commit(), changes may not be stored.
+]
 
-# print("Data Inserted Successfully")
-# Displays successful insertion message.
+# Insert multiple records
+cursor.executemany(
+    "INSERT INTO students VALUES (?, ?, ?, ?)",
+    students_data
+)
 
-# cursor.execute("SELECT * FROM students")
-# SELECT * retrieves all columns and all rows from students table.
+# Save changes permanently
+conn.commit()
 
-# rows = cursor.fetchall()
-# fetchall() retrieves all rows returned by SELECT query.
-# Data is stored in variable rows as a list.
+print("Data Inserted Successfully")
 
-# print("\nStudent Records:\n")
-# Displays heading for records.
+# ----------------------------------------------------------
+# DISPLAY ALL RECORDS
+# ----------------------------------------------------------
 
-# for row in rows:
-#     print(row)
-# for loop prints each student record one by one.
+cursor.execute("SELECT * FROM students")
 
-# cursor.execute(
-#     "SELECT * FROM students WHERE marks > 80"
-# )
-# Retrieves records of students whose marks are greater than 80.
-# WHERE clause applies condition filtering.
+rows = cursor.fetchall()
 
-# print(cursor.fetchall())
-# Displays filtered student records.
+print("\nStudent Records:\n")
 
-# cursor.execute(
-#     "SELECT AVG(marks) FROM students"
-# )
-# AVG() is an aggregate SQL function.
-# It calculates average marks of all students.
+for row in rows:
+    print(row)
 
-# print(cursor.fetchone())
-# fetchone() retrieves only one result from query.
+# ----------------------------------------------------------
+# STUDENTS WITH MARKS GREATER THAN 80
+# ----------------------------------------------------------
 
-# cursor.execute(
-#     "UPDATE students SET marks = 88 WHERE id = 2"
-# )
-# UPDATE query modifies existing records.
-# Here marks of student with id = 2 are updated to 88.
+cursor.execute(
+    "SELECT * FROM students WHERE marks > 80"
+)
 
-# conn.commit()
-# Saves updated values permanently.
+print("\nStudents with Marks > 80:\n")
 
-# print("\nRecord Updated Successfully")
-# Displays update success message.
+for row in cursor.fetchall():
+    print(row)
 
-# cursor.execute(
-#     "DELETE FROM students WHERE id = 1"
-# )
-# DELETE query removes records from table.
-# Here record with id = 1 is deleted.
+# ----------------------------------------------------------
+# AVERAGE MARKS
+# ----------------------------------------------------------
 
-# conn.commit()
-# Saves deletion changes permanently.
+cursor.execute(
+    "SELECT AVG(marks) FROM students"
+)
 
-# print("\nRecord Deleted Successfully")
-# Displays deletion success message.
+print("\nAverage Marks:")
 
-# cursor.execute("SELECT * FROM students")
-# Retrieves final table data after update and delete operations.
+print(cursor.fetchone()[0])
 
-# for row in cursor.fetchall():
-#     print(row)
-# Prints all remaining records from table.
+# ----------------------------------------------------------
+# UPDATE RECORD
+# ----------------------------------------------------------
 
-# conn.close()
-# Closes database connection safely.
-# Closing connection releases system resources.
+cursor.execute(
+    "UPDATE students SET marks = 88 WHERE id = 2"
+)
 
-# conn = sqlite3.connect("student.db")
-# Reconnects database for additional SQL queries.
+conn.commit()
 
-# cursor = conn.cursor()
-# Creates new cursor object for executing queries.
+print("\nRecord Updated Successfully")
 
-# cursor.execute(
-#     "SELECT MAX(marks) FROM students"
-# )
-# MAX() function returns highest marks value.
+# ----------------------------------------------------------
+# DELETE RECORD
+# ----------------------------------------------------------
 
-# print(cursor.fetchone())
-# Displays maximum marks.
+cursor.execute(
+    "DELETE FROM students WHERE id = 1"
+)
 
-# cursor.execute(
-#     "SELECT MIN(marks) FROM students"
-# )
-# MIN() function returns minimum marks value.
+conn.commit()
 
-# print(cursor.fetchone())
-# Displays minimum marks.
+print("\nRecord Deleted Successfully")
 
-# cursor.execute(
-#     "SELECT COUNT(*) FROM students"
-# )
-# COUNT(*) counts total number of rows in students table.
+# ----------------------------------------------------------
+# FINAL TABLE DATA
+# ----------------------------------------------------------
 
-# print(cursor.fetchone())
-# Displays total student count.
+cursor.execute("SELECT * FROM students")
 
-# cursor.execute(
-#     "SELECT * FROM students ORDER BY marks DESC"
-# )
-# ORDER BY sorts records according to marks.
-# DESC means descending order (highest to lowest).
+print("\nFinal Table Data:\n")
 
-# for row in cursor.fetchall():
-#     print(row)
-# Displays sorted records.
+for row in cursor.fetchall():
+    print(row)
 
-# cursor.execute(
-#     "SELECT * FROM students WHERE age > 20"
-# )
-# Retrieves students whose age is greater than 20.
+# ==========================================================
+# EXTRA QUERIES
+# ==========================================================
 
-# print(cursor.fetchall())
-# Displays filtered records.
+# ----------------------------------------------------------
+# MAXIMUM MARKS
+# ----------------------------------------------------------
 
-# conn.close()
-# Finally closes database connection safely.
+cursor.execute(
+    "SELECT MAX(marks) FROM students"
+)
 
+print("\nMaximum Marks:")
+
+print(cursor.fetchone()[0])
+
+# ----------------------------------------------------------
+# MINIMUM MARKS
+# ----------------------------------------------------------
+
+cursor.execute(
+    "SELECT MIN(marks) FROM students"
+)
+
+print("\nMinimum Marks:")
+
+print(cursor.fetchone()[0])
+
+# ----------------------------------------------------------
+# TOTAL STUDENTS
+# ----------------------------------------------------------
+
+cursor.execute(
+    "SELECT COUNT(*) FROM students"
+)
+
+print("\nTotal Students:")
+
+print(cursor.fetchone()[0])
+
+# ----------------------------------------------------------
+# SORT STUDENTS BY MARKS
+# ----------------------------------------------------------
+
+cursor.execute(
+    "SELECT * FROM students ORDER BY marks DESC"
+)
+
+print("\nStudents Sorted by Marks:\n")
+
+for row in cursor.fetchall():
+    print(row)
+
+# ----------------------------------------------------------
+# STUDENTS WITH AGE GREATER THAN 20
+# ----------------------------------------------------------
+
+cursor.execute(
+    "SELECT * FROM students WHERE age > 20"
+)
+
+print("\nStudents with Age > 20:\n")
+
+for row in cursor.fetchall():
+    print(row)
+
+# ----------------------------------------------------------
+# CLOSE DATABASE CONNECTION
+# ----------------------------------------------------------
+
+conn.close()
+
+print("\nDatabase Connection Closed")
+
+
+# ==========================================================
+# DETAILED EXPLANATION OF CODE
+# ==========================================================
+
+"""
+1. IMPORT SQLITE
+----------------
+import sqlite3
+
+- sqlite3 is a built-in Python library.
+- It is used to create and manage SQLite databases.
+- No separate installation is required.
+
+------------------------------------------------------------
+
+2. CONNECT DATABASE
+-------------------
+conn = sqlite3.connect("student.db")
+
+- Creates a new database file named student.db.
+- If the database already exists, it connects to it.
+
+cursor = conn.cursor()
+
+- Cursor object is created.
+- Cursor is used to execute SQL commands.
+
+------------------------------------------------------------
+
+3. DROP TABLE
+--------------
+DROP TABLE IF EXISTS students
+
+- Deletes old students table if already present.
+- Prevents duplicate primary key errors.
+
+------------------------------------------------------------
+
+4. CREATE TABLE
+----------------
+CREATE TABLE students
+
+- Creates a table named students.
+
+Columns:
+1. id      -> Student ID (Primary Key)
+2. name    -> Student Name
+3. age     -> Student Age
+4. marks   -> Student Marks
+
+PRIMARY KEY:
+- Unique value for every row.
+- Duplicate IDs are not allowed.
+
+------------------------------------------------------------
+
+5. INSERT DATA
+---------------
+executemany()
+
+- Inserts multiple rows at once.
+- Improves readability and efficiency.
+
+Example Record:
+(1, 'Abhinav', 20, 85)
+
+------------------------------------------------------------
+
+6. COMMIT
+----------
+conn.commit()
+
+- Saves all changes permanently in database.
+
+------------------------------------------------------------
+
+7. SELECT QUERY
+----------------
+SELECT * FROM students
+
+- Fetches all records from table.
+
+fetchall():
+- Retrieves all rows from query result.
+
+------------------------------------------------------------
+
+8. WHERE CLAUSE
+----------------
+SELECT * FROM students WHERE marks > 80
+
+- Displays students whose marks are greater than 80.
+
+------------------------------------------------------------
+
+9. AGGREGATE FUNCTION
+----------------------
+AVG(marks)
+
+- Calculates average marks of students.
+
+Other Aggregate Functions:
+1. MAX()
+2. MIN()
+3. COUNT()
+
+------------------------------------------------------------
+
+10. UPDATE QUERY
+-----------------
+UPDATE students SET marks = 88 WHERE id = 2
+
+- Updates marks of student whose ID is 2.
+
+------------------------------------------------------------
+
+11. DELETE QUERY
+-----------------
+DELETE FROM students WHERE id = 1
+
+- Deletes record whose ID is 1.
+
+------------------------------------------------------------
+
+12. ORDER BY
+-------------
+ORDER BY marks DESC
+
+- Sorts records in descending order of marks.
+
+DESC  -> Descending
+ASC   -> Ascending
+
+------------------------------------------------------------
+
+13. CLOSE CONNECTION
+---------------------
+conn.close()
+
+- Closes database connection.
+- Frees system resources.
+
+------------------------------------------------------------
+
+OUTPUT SUMMARY
+----------------
+The program performs:
+
+1. Database Creation
+2. Table Creation
+3. Data Insertion
+4. Data Display
+5. Conditional Queries
+6. Average Calculation
+7. Record Update
+8. Record Deletion
+9. Sorting Records
+10. Aggregate Operations
+
+"""
 
 # ==========================================================
 # VIVA QUESTIONS
